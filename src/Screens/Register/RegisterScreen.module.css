@@ -1,0 +1,19 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.signin__container {
+    padding: 20px 0;
+    margin-top: 20px;
+    text-align: center;
+    width: 100%;
+    max-width: 400px;
+    border: 1px solid #ddd;
+    background: #fff;
+}
+
+.signin__container a {
+    font-weight: 500;
+}

@@ -1,5 +1,11 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
+import { Typography } from '@material-ui/core';
+
+import { Layout, Register } from '../../components';
+
+import styles from './RegisterScreen.module.css';
 
 export default function RegisterScreen() {
   return (
@@ -7,7 +13,16 @@ export default function RegisterScreen() {
       <Helmet>
         <title>Register • iDreamm</title>
       </Helmet>
-      <div>Register Screen</div>
+      <Layout>
+        <div className={styles.container}>
+          <Register />
+          <div className={styles.signin__container}>
+            <Typography>
+              Already have an account? <Link to='/login'>Sign in</Link>
+            </Typography>
+          </div>
+        </div>
+      </Layout>
     </>
   );
 }

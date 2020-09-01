@@ -2,4 +2,15 @@
     width: 90%;
     max-width: 1024px;
     margin: auto;
+    color: #334;
+}
+
+.app a {
+    cursor: pointer;
+    text-decoration: none;
+    color: #006eff;
+}
+
+.app a:hover {
+    text-decoration: none;
 }

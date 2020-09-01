@@ -1,0 +1,34 @@
+.container {
+  width: 100%;
+  max-width: 400px;
+  border: 1px solid #ddd;
+  text-align: center;
+  padding: 0 40px;
+  box-sizing: border-box;
+  background: #fff;
+}
+
+.or_seperator {
+  display: flex;
+  align-items: center;
+  margin: 20px 0;
+}
+
+.or_seperator span:nth-child(odd) {
+  height: 1px;
+  background: #ddd;
+  display: inline-block;
+  flex: 1;
+}
+
+.google_logo {
+  margin-right: 10px;
+}
+
+@media (max-width: 600px) {
+  .container {
+    padding: 0;
+    border: none;
+  }
+
+}

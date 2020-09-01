@@ -1,0 +1,28 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    min-height: 650px;
+}
+
+.hero {
+    display: flex;
+    align-items: center;
+    flex: 1;
+}
+
+.hero>div {
+    flex: 1;
+}
+
+.hero>div:first-child {
+    padding-right: 20px;
+    box-sizing: border-box;
+}
+
+@media (max-width: 600px) {
+    .hero>div:first-child {
+        display: none;
+    }
+
+}

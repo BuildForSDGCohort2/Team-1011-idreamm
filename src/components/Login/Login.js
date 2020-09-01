@@ -14,6 +14,10 @@ import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import styles from './Login.module.css';
 
 const useStyles = makeStyles({
+  subtitle: {
+    fontWeight: 500,
+    marginBottom: '30px',
+  },
   or_text: {
     margin: '0px 15px',
   },
@@ -27,7 +31,7 @@ const useStyles = makeStyles({
   brand: {
     fontFamily: 'Lobster Two, cursive',
     fontWeight: 700,
-    margin: '30px 0',
+    marginTop: '30px',
   },
   forgot_pass: {
     margin: '20px 0',
@@ -46,6 +50,9 @@ export default function Login() {
     <div className={styles.container}>
       <Typography variant='h4' className={classes.brand}>
         iDreamm
+      </Typography>
+      <Typography className={classes.subtitle} color='textSecondary'>
+        Sign in to continue your journey
       </Typography>
       <form className={styles.form}>
         <TextField

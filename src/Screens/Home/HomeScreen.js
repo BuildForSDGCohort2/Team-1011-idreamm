@@ -1,5 +1,8 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
+import { AppBar, AppMenu, MessengerPage } from '../../components';
+
+import styles from './HomeScreen.module.css';
 
 export default function HomeScreen() {
   return (
@@ -7,7 +10,17 @@ export default function HomeScreen() {
       <Helmet>
         <title>iDreamm</title>
       </Helmet>
-      <div>Home Screen</div>
+      <div className={styles.container}>
+        <AppBar />
+        <div className={styles.app__content__container}>
+          <main className={styles.app__content}>
+            <MessengerPage />
+          </main>
+        </div>
+        <div className={styles.app__menu__container}>
+          <AppMenu />
+        </div>
+      </div>
     </>
   );
 }

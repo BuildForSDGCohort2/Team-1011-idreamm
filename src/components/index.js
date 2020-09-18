@@ -1,3 +1,9 @@
+export { default as AppBar } from './AppBar/AppBar';
 export { default as Login } from './Login/Login';
 export { default as Register } from './Register/Register';
 export { default as Layout } from './Layout/Layout';
+export { default as AppMenu } from './AppMenu/AppMenu';
+export { default as HomePage } from './HomePage/HomePage';
+export { default as MessengerPage } from './MessengerPage/MesssengerPage';
+export { default as NewPostPage } from './NewPostPage/NewPostPage';
+export { default as ProfilePage } from './ProfilePage/ProfilePage';

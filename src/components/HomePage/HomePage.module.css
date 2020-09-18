@@ -1,0 +1,12 @@
+.homepage__container {
+    flex: 1;
+    height: fit-content;
+    padding-top: 25px;
+}
+
+@media (max-width: 600px) {
+    .homepage__container {
+        padding-top: 10px;
+        background: #ddd;
+    }
+}

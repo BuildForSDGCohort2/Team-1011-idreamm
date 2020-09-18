@@ -1,8 +1,6 @@
 .app {
-    width: 90%;
-    max-width: 1024px;
-    margin: auto;
     color: #334;
+    background: #fafafa;
 }
 
 .app a {

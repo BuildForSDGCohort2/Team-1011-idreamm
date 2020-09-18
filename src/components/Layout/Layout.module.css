@@ -1,11 +1,14 @@
 .container {
+    width: 90%;
+    max-width: 1024px;
+    margin: auto;
     display: flex;
     flex-direction: column;
     height: 100vh;
-    min-height: 650px;
 }
 
 .hero {
+    min-height: 700px;
     display: flex;
     align-items: center;
     flex: 1;
@@ -21,6 +24,10 @@
 }
 
 @media (max-width: 600px) {
+    .hero {
+        min-height: auto;
+    }
+
     .hero>div:first-child {
         display: none;
     }

@@ -61,6 +61,7 @@ export default function Login() {
           variant='filled'
           className={classes.input}
           size='small'
+          type='email'
         />
         <TextField
           fullWidth
@@ -70,13 +71,18 @@ export default function Login() {
             endAdornment: (
               <InputAdornment position='end'>
                 <IconButton aria-label='toggle password visibility' edge='end'>
-                  {true ? <Visibility /> : <VisibilityOff />}
+                  {true ? (
+                    <Visibility fontSize='small' />
+                  ) : (
+                    <VisibilityOff fontSize='small' />
+                  )}
                 </IconButton>
               </InputAdornment>
             ),
           }}
           className={classes.input}
           size='small'
+          type='password'
         />
         <Button
           variant='contained'

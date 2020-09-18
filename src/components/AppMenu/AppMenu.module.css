@@ -1,0 +1,16 @@
+.active_menu::before {
+    content: '';
+    position: absolute;
+    bottom: 5px;
+    height: 5px;
+    width: 5px;
+    border-radius: 50%;
+    background-color: #f50057;
+}
+
+@media (max-width: 600px) {
+    .appbar__menu {
+        display: flex;
+        justify-content: space-evenly;
+    }
+}

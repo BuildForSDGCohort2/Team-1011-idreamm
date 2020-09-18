@@ -1,0 +1,5 @@
+.messenger__page__container {
+    flex: 1;
+    display: flex;
+    align-items: center;
+}

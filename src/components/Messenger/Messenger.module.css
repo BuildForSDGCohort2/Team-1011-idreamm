@@ -1,0 +1,39 @@
+.messenger__container {
+    display: grid;
+    grid-template: 60px 1fr 60px / 320px 1fr;
+    grid-template-areas: "n c""u m""u f";
+    width: 100%;
+    height: 95%;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    background: #fff;
+}
+
+.messenger__container header {
+    grid-area: n;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+    border-bottom: 1px solid #eee;
+    border-right: 1px solid #eee;
+}
+
+.currentUser__container {
+    grid-area: c;
+    border-bottom: 1px solid #eee;
+}
+
+.allUsers__container {
+    grid-area: u;
+    border-right: 1px solid #eee;
+}
+
+.messages__container {
+    grid-area: m;
+    border-bottom: 1px solid #eee;
+}
+
+.messenger__form__container {
+    grid-area: f;
+}

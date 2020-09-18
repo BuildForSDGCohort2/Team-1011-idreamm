@@ -1,0 +1,37 @@
+.container {
+    height: 100vh;
+    min-height: 400px;
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+}
+
+.app__content__container {
+    overflow-y: auto;
+    height: 100%;
+}
+
+.app__content {
+    width: 100%;
+    max-width: 1014px;
+    margin: 0 auto;
+    height: 100%;
+    display: flex;
+}
+
+.app__menu__container {
+    display: none;
+    border-top: 1px solid #ddd;
+    background: #fff;
+}
+
+@media (max-width: 600px) {
+    .app__menu__container {
+        display: block;
+    }
+
+    .app__content {
+        width: 100%;
+        max-width: 1014px;
+        margin: 0 auto;
+    }
+}

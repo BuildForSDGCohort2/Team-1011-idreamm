@@ -11,7 +11,7 @@ export default function RegisterScreen() {
   return (
     <>
       <Helmet>
-        <title>Register • iDreamm</title>
+        <title>Sign up • iDreamm</title>
       </Helmet>
       <Layout>
         <div className={styles.container}>

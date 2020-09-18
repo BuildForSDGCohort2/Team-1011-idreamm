@@ -1,0 +1,12 @@
+.currentUser {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    height: 100%;
+}
+
+.currentUser>div:first-child {
+    display: flex;
+    align-items: center;
+}

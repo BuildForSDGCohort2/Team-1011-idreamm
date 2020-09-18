@@ -1,0 +1,48 @@
+.container {
+    width: 90%;
+    max-width: 1024px;
+    margin: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.search__container {
+    position: relative;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    width: 150px;
+    transition: width 0.25s ease-in-out;
+}
+
+.search__container:focus-within {
+    width: 200px;
+}
+
+.searchIcon__container {
+    padding: 0 18px;
+    height: 100%;
+    position: absolute;
+    pointer-events: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.mobile__search__btn {
+    display: none;
+}
+
+@media (max-width: 600px) {
+    .appbar__menu__container {
+        display: none;
+    }
+
+    .mobile__search__btn {
+        display: initial;
+    }
+
+    .search__container {
+        display: none;
+    }
+}

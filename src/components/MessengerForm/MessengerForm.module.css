@@ -1,0 +1,33 @@
+.messenger__form {
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.messenger__form form {
+    display: flex;
+    flex: 1;
+}
+
+.input {
+    line-height: 3;
+}
+
+@media (min-width: 768px) {
+    .input::-webkit-scrollbar {
+        width: 5px;
+    }
+
+    .input::-webkit-scrollbar-track {
+        background: #f1f1f1;
+    }
+
+    .input::-webkit-scrollbar-thumb {
+        background: #888;
+        border-radius: 15px;
+    }
+
+    .input::-webkit-scrollbar-thumb:hover {
+        background: #555;
+    }
+}

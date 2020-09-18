@@ -1,0 +1,28 @@
+.sender__container {
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.sender__container>div {
+    width: fit-content;
+    max-width: 60%;
+    background: #eee;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+.receiver__container {
+    margin-bottom: 20px;
+    display: flex;
+}
+
+.receiver__container>div {
+    width: fit-content;
+    max-width: 60%;
+    border: 1px solid #eee;
+    border-top-right-radius: 5px;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+}

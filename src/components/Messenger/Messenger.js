@@ -4,6 +4,9 @@ import { Add } from '@material-ui/icons';
 
 import styles from './Messenger.module.css';
 import CurrentUser from '../CurrentUser/CurrentUser';
+import Users from '../Users/Users';
+import MessengerForm from '../MessengerForm/MessengerForm';
+import Messages from '../Messages/Messages';
 
 const useStyles = makeStyles({
   title: {
@@ -26,9 +29,15 @@ export default function Messenger() {
       <div className={styles.currentUser__container}>
         <CurrentUser />
       </div>
-      <div className={styles.allUsers__container}>all users</div>
-      <div className={styles.messages__container}>messages</div>
-      <div className={styles.messenger__form__container}>form</div>
+      <div className={styles.users__container}>
+        <Users />
+      </div>
+      <div className={styles.messages__container}>
+        <Messages />
+      </div>
+      <div className={styles.messenger__form__container}>
+        <MessengerForm />
+      </div>
     </div>
   );
 }

@@ -1,0 +1,9 @@
+.user {
+    padding: 8px 20px;
+    display: flex;
+    align-items: center;
+}
+
+.user>div:first-child {
+    margin-right: 15px;
+}

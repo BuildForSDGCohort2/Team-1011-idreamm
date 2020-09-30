@@ -1,6 +1,6 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
-import { AppBar, AppMenu, MessengerPage } from '../../components';
+import { AppBar, AppMenu, NewPostPage } from '../../components';
 
 import styles from './HomeScreen.module.css';
 
@@ -14,7 +14,7 @@ export default function HomeScreen() {
         <AppBar />
         <div className={styles.app__content__container}>
           <main className={styles.app__content}>
-            <MessengerPage />
+            <NewPostPage />
           </main>
         </div>
         <div className={styles.app__menu__container}>

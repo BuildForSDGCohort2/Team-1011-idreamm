@@ -5,8 +5,9 @@
 }
 
 .messenger__form form {
-    display: flex;
     flex: 1;
+    display: flex;
+    align-items: center;
 }
 
 .input {

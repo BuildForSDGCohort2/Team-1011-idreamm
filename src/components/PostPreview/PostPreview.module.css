@@ -1,0 +1,30 @@
+.container>div {
+    height: 85%;
+    width: 85%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.container video,
+.container img {
+    width: 100%;
+    object-fit: cover;
+}
+
+.preview {
+    position: relative;
+    background: #334;
+    margin: -1px;
+}
+
+.preview>form {
+    position: absolute;
+    display: flex;
+    bottom: 20px;
+    left: 20px;
+    right: 20px;
+    background: #fff;
+    min-height: 50px;
+    border-radius: 3px;
+}

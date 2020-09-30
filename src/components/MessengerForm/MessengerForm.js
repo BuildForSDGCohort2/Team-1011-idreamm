@@ -15,7 +15,7 @@ export default function MessengerForm() {
 
   return (
     <div className={styles.messenger__form}>
-      <IconButton>
+      <IconButton color="inherit">
         <InsertEmoticon />
       </IconButton>
       <form>
@@ -29,7 +29,7 @@ export default function MessengerForm() {
           }}
           rowsMax='4'
         />
-        <IconButton>
+        <IconButton color="inherit">
           <Send />
         </IconButton>
       </form>

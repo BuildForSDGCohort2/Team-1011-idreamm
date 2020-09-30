@@ -1,55 +1,66 @@
-import React from "react";
-import { Button, InputBase, makeStyles, Typography } from "@material-ui/core";
+import React, { useContext, useEffect, useState } from 'react';
+import { Button, InputBase, makeStyles, Typography } from '@material-ui/core';
 
-import Video from "../Video/Video";
+import Video from '../Video/Video';
 
-import styles from "./PostPreview.module.css";
+import { NewPostContext } from '../../context/NewPostContext';
+
+import styles from './PostPreview.module.css';
 
 const useStyles = makeStyles({
   txt: {
-    fontSize: "18px",
+    fontSize: '18px',
     fontWeight: 500,
-    textTransform: "uppercase",
+    textTransform: 'uppercase',
   },
   input: {
-    fontSize: "14px",
-    padding: "10px 0 10px 10px",
-    lineHeight: "1.3",
+    fontSize: '14px',
+    padding: '10px 0 10px 10px',
+    lineHeight: '1.3',
   },
 });
 
 export default function PostPreview() {
+  const [file] = useContext(NewPostContext);
+  const [fileType, setFileType] = useState('none');
+
   const classes = useStyles();
+
+  useEffect(() => {
+    if (file) {
+      setFileType(file.data.type);
+    }
+    console.log(file);
+  }, [file]);
 
   return (
     <div className={styles.container}>
-      {false ? (
+      {!file ? (
         <div>
           <Typography className={classes.txt}>Preview</Typography>
-          <Typography variant="subtitle2" color="textSecondary">
+          <Typography variant='subtitle2' color='textSecondary'>
             Your file will display here
           </Typography>
         </div>
       ) : (
         <div className={styles.preview}>
-          {true ? (
+          {/image*/i.test(fileType) && (
             <img
-              src="https://images.pexels.com/photos/4727507/pexels-photo-4727507.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500"
-              alt="Post preview"
+              src={file.preview}
+              alt='Post preview'
+              onLoadedMetadata={() => URL.revokeObjectURL(file.preview)}
             />
-          ) : (
-            <Video url="https://player.vimeo.com/external/335062628.sd.mp4?s=4b9655670fe0c5320c3a1019c9a05d4c96065117&profile_id=139&oauth2_token_id=57447761" />
           )}
-
+          {/video*/i.test(fileType) && <Video url={file.preview} />}
           <form>
             <InputBase
-              placeholder="Add comment..."
+              placeholder='Add comment...'
               fullWidth
               className={classes.input}
               rowsMax={4}
               multiline
             />
-            <Button color="primary" size="small">
+            <Button color='primary' size='small'>
               Post
             </Button>
           </form>

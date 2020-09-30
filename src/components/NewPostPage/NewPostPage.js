@@ -12,7 +12,7 @@ export default function MesssengerPage() {
         <title>New post • iDreamm</title>
       </Helmet>
       <div className={styles.container}>
-       <NewPost />
+        <NewPost />
       </div>
     </>
   );

@@ -1,10 +1,8 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Button, InputBase, makeStyles, Typography } from '@material-ui/core';
-
 import Video from '../Video/Video';
-
+import Image from '../Image/Image';
 import { NewPostContext } from '../../context/NewPostContext';
-
 import styles from './PostPreview.module.css';
 
 const useStyles = makeStyles({
@@ -44,11 +42,7 @@ export default function PostPreview() {
       ) : (
         <div className={styles.preview}>
           {/image*/i.test(fileType) && (
-            <img
-              src={file.preview}
-              alt='Post preview'
-              onLoadedMetadata={() => URL.revokeObjectURL(file.preview)}
-            />
+            <Image url={file.preview} alt='Post preview' />
           )}
           {/video*/i.test(fileType) && <Video url={file.preview} />}
           <form>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import {
   TextField,
   InputAdornment,
@@ -11,7 +11,6 @@ import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import moment from 'moment';
 import firebase from 'firebase/app';
-
 import {
   validateFirstName,
   validateUserName,
@@ -19,7 +18,9 @@ import {
   validatePassword,
 } from '../../utils/helper';
 import { auth, db } from '../../utils/firebase';
-
+import { LoadingContext } from '../../context/LoadingContext';
+import { SnackContext } from '../../context/SnackContext';
+import { AuthContext } from '../../context/AuthContext';
 import styles from './Register.module.css';
 
 const useStyles = makeStyles({
@@ -61,6 +62,10 @@ export default function Register({ history }) {
   const [passwordError, setPasswordError] = useState(null);
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
+  const { setCurrentUser } = useContext(AuthContext);
+  const [isLoading, setIsLoading] = useContext(LoadingContext);
+  const setSnack = useContext(SnackContext)[1];
+
   const classes = useStyles();
 
   const handleChange = (e) => {
@@ -83,6 +88,7 @@ export default function Register({ history }) {
 
   const handleSignUp = (e) => {
     e.preventDefault();
+    setIsLoading(true);
 
     if (
       firstNameError ||
@@ -103,32 +109,73 @@ export default function Register({ history }) {
         data.user.updateProfile({
           displayName: username,
         });
-        data.user.sendEmailVerification().catch((err) => {
-          //console.log(err);
-        });
+        data.user.sendEmailVerification();
         db.collection('users').doc(data.user.uid).set({
           uid: data.user.uid,
           email,
           username,
+          firstName,
           joined: moment.utc().format(),
         });
 
+        setCurrentUser({
+          email: data.user.email,
+          uid: data.user.uid,
+          username,
+        });
+
+        setIsLoading(false);
         history.push('/');
       })
       .catch((err) => {
         if (err.code === 'auth/email-already-in-use') {
+          setSnack({
+            open: true,
+            message: 'Email already exist',
+          });
         } else {
+          setSnack({
+            open: true,
+            message: 'Sign up failed! Please try again',
+          });
         }
+
+        setIsLoading(false);
       });
   };
 
   const handleGoogleLogin = () => {
+    setIsLoading(true);
+
     const provider = new firebase.auth.GoogleAuthProvider();
 
-    auth.signInWithPopup(provider).then((data) => {
-      console.log(data.user);
-      history.push('/');
-    });
+    auth
+      .signInWithPopup(provider)
+      .then((data) => {
+        setCurrentUser({
+          email: data.user.email,
+          uid: data.user.uid,
+          username: data.user.displayName,
+        });
+
+        setIsLoading(false);
+        history.push('/');
+      })
+      .catch((err) => {
+        if (/^auth/.test(err.code)) {
+          setSnack({
+            open: true,
+            message: 'Invalid email or password',
+          });
+        } else {
+          setSnack({
+            open: true,
+            message: 'Sign in failed, unknwon error!',
+          });
+        }
+
+        setIsLoading(false);
+      });
   };
 
   return (
@@ -139,7 +186,7 @@ export default function Register({ history }) {
       <Typography className={classes.subtitle} color='textSecondary'>
         Sign up to start your journey
       </Typography>
-      <form className={styles.form} onSubmit={handleSignUp}>
+      <form className={styles.form} onSubmit={handleSignUp} autoComplete='off'>
         <TextField
           fullWidth
           label='First name'
@@ -152,6 +199,7 @@ export default function Register({ history }) {
           onChange={handleChange}
           error={firstNameError}
           helperText={firstNameError ? firstNameError : ''}
+          disabled={isLoading}
         />
         <TextField
           fullWidth
@@ -165,6 +213,7 @@ export default function Register({ history }) {
           onChange={handleChange}
           error={userNameError}
           helperText={userNameError ? userNameError : ''}
+          disabled={isLoading}
         />
         <TextField
           fullWidth
@@ -178,6 +227,7 @@ export default function Register({ history }) {
           onChange={handleChange}
           error={emailError}
           helperText={emailError ? emailError : ''}
+          disabled={isLoading}
         />
         <TextField
           fullWidth
@@ -212,6 +262,7 @@ export default function Register({ history }) {
           onChange={handleChange}
           error={passwordError}
           helperText={passwordError ? passwordError : ''}
+          disabled={isLoading}
         />
         <Button
           variant='contained'
@@ -228,7 +279,8 @@ export default function Register({ history }) {
             !firstName ||
             !username ||
             !email ||
-            !password
+            !password ||
+            isLoading
               ? true
               : false
           }
@@ -252,6 +304,7 @@ export default function Register({ history }) {
           variant='outlined'
           color='primary'
           onClick={handleGoogleLogin}
+          disabled={isLoading}
         >
           <img
             src='google-icon.svg'

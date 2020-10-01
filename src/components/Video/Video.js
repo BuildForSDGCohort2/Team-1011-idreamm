@@ -1,6 +1,6 @@
 import { CircularProgress, Fade, makeStyles, Zoom } from '@material-ui/core';
 import { PlayCircleOutline } from '@material-ui/icons';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useState } from 'react';
 
 import styles from './Video.module.css';
@@ -34,6 +34,10 @@ export default function Video({ url }) {
       setIsPlaying(false);
     }
   };
+
+  useEffect(() => {
+    setIsPlaying(false);
+  }, [url]);
 
   return (
     <>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import {
@@ -7,12 +7,11 @@ import {
   RegisterScreen,
   PageNotFound,
 } from './screens';
-
-import { NavigationProvider } from './context/NavigationContext';
 import ProtectedRoute from './auth/ProtectedRoute';
-
 import styles from './App.module.css';
-import { AuthProvider } from './context/AuthContext';
+import { LinearProgress } from '@material-ui/core';
+import { SnackBar } from './components';
+import { LoadingContext } from './context/LoadingContext';
 
 const theme = createMuiTheme({
   palette: {
@@ -23,22 +22,27 @@ const theme = createMuiTheme({
 });
 
 export default function App() {
+  const [isLoading] = useContext(LoadingContext);
+
   return (
     <ThemeProvider theme={theme}>
-      <AuthProvider>
-        <NavigationProvider>
-          <div className={styles.app}>
-            <Router>
-              <Switch>
-                <ProtectedRoute path='/' component={HomeScreen} exact />
-                <Route path='/login' component={LoginScreen} exact />
-                <Route path='/register' component={RegisterScreen} exact />
-                <Route path='*' component={PageNotFound} exact />
-              </Switch>
-            </Router>
-          </div>
-        </NavigationProvider>
-      </AuthProvider>
+      <div className={styles.app}>
+        <Router>
+          <Switch>
+            <ProtectedRoute path='/' component={HomeScreen} exact />
+            <Route path='/login' component={LoginScreen} exact />
+            <Route path='/register' component={RegisterScreen} exact />
+            <Route path='*' component={PageNotFound} exact />
+          </Switch>
+        </Router>
+        {isLoading && (
+          <LinearProgress
+            color='secondary'
+            style={{ position: 'fixed', left: 0, top: 0, right: 0 }}
+          />
+        )}
+        <SnackBar />
+      </div>
     </ThemeProvider>
   );
 }

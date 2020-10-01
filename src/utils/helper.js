@@ -5,8 +5,8 @@ const validateUserName = (username) => {
     return 'Username is required';
   }
 
-  if (username.length < 4 || username.length > 16) {
-    return 'Username must contain 3 - 16 characters';
+  if (username.length < 2 || username.length > 16) {
+    return 'Username must contain 2 - 16 characters';
   }
 
   if (

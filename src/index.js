@@ -3,10 +3,22 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
+import { AuthProvider } from './context/AuthContext';
+import { LoadingProvider } from './context/LoadingContext';
+import { SnackProvider } from './context/SnackContext';
+import { NavigationProvider } from './context/NavigationContext';
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <AuthProvider>
+      <NavigationProvider>
+        <LoadingProvider>
+          <SnackProvider>
+            <App />
+          </SnackProvider>
+        </LoadingProvider>
+      </NavigationProvider>
+    </AuthProvider>
   </React.StrictMode>,
   document.getElementById('root')
 );

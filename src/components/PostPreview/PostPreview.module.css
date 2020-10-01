@@ -36,17 +36,17 @@
 
 @keyframes slide {
     from {
-        left: -200px;
+        opacity: 0;
     }
 
     to {
-        left: 0px;
+        opacity: 1;
     }
 }
 
 @media (min-width: 768px) {
     .preview>form textarea {
-        padding-right: 10px;
+        padding-right: 3px;
     }
 
     .preview>form textarea::-webkit-scrollbar {

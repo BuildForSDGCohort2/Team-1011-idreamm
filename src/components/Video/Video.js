@@ -11,9 +11,11 @@ const useStyles = makeStyles({
     color: '#fff',
     cursor: 'pointer',
     pointerEvents: 'none',
+    zIndex: 3,
   },
   loader: {
     color: '#fff',
+    zIndex: 3,
   },
 });
 

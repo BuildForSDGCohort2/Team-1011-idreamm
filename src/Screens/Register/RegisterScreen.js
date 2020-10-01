@@ -7,7 +7,7 @@ import { Layout, Register } from '../../components';
 
 import styles from './RegisterScreen.module.css';
 
-export default function RegisterScreen() {
+export default function RegisterScreen({ history }) {
   return (
     <>
       <Helmet>
@@ -15,7 +15,7 @@ export default function RegisterScreen() {
       </Helmet>
       <Layout>
         <div className={styles.container}>
-          <Register />
+          <Register history={history} />
           <div className={styles.signin__container}>
             <Typography>
               Already have an account? <Link to='/login'>Sign in</Link>

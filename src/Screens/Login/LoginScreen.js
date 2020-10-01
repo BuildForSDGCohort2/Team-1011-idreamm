@@ -6,7 +6,7 @@ import { Login, Layout } from '../../components';
 
 import styles from './LoginScreen.module.css';
 
-export default function LoginScreen() {
+export default function LoginScreen({ history }) {
   return (
     <>
       <Helmet>
@@ -14,7 +14,7 @@ export default function LoginScreen() {
       </Helmet>
       <Layout>
         <div className={styles.container}>
-          <Login />
+          <Login history={history} />
           <div className={styles.signup__container}>
             <Typography>
               Don't have an account? <Link to='/register'>Sign up</Link>

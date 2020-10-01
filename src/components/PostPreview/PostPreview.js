@@ -30,7 +30,6 @@ export default function PostPreview() {
     if (file) {
       setFileType(file.data.type);
     }
-    console.log(file);
   }, [file]);
 
   return (

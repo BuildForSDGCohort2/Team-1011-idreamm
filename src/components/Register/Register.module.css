@@ -6,6 +6,8 @@
     padding: 0 40px 30px;
     box-sizing: border-box;
     background: #fff;
+    max-height: 80vh;
+    overflow-y: auto;
 }
 
 .or_seperator {

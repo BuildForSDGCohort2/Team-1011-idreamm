@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   TextField,
   InputAdornment,
@@ -10,6 +10,11 @@ import {
 } from '@material-ui/core';
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
+
+import firebase from 'firebase/app';
+
+import { validateEmail, validatePassword } from '../../utils/helper';
+import { auth } from '../../utils/firebase';
 
 import styles from './Login.module.css';
 
@@ -44,8 +49,48 @@ const useStyles = makeStyles({
   },
 });
 
-export default function Login() {
+export default function Login({ history }) {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [emailError, setEmailError] = useState(null);
+  const [passwordError, setPasswordError] = useState(null);
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+
   const classes = useStyles();
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+
+    if (name === 'email') {
+      setEmail(value);
+      setEmailError(validateEmail(value));
+    } else if (name === 'password') {
+      setPassword(value);
+      setPasswordError(validatePassword(value));
+    }
+  };
+
+  const handleLogin = (e) => {
+    e.preventDefault();
+
+    if (emailError || passwordError || !email || !password) {
+      return;
+    }
+
+    auth.signInWithEmailAndPassword(email, password).then((data) => {
+      history.push('/');
+    });
+  };
+
+  const handleGoogleLogin = () => {
+    const provider = new firebase.auth.GoogleAuthProvider();
+
+    auth.signInWithPopup(provider).then((data) => {
+      console.log(data.user);
+      history.push('/');
+    });
+  };
+
   return (
     <div className={styles.container}>
       <Typography variant='h4' className={classes.brand}>
@@ -54,7 +99,7 @@ export default function Login() {
       <Typography className={classes.subtitle} color='textSecondary'>
         Sign in to continue your journey
       </Typography>
-      <form className={styles.form}>
+      <form className={styles.form} onSubmit={handleLogin}>
         <TextField
           fullWidth
           label='Email'
@@ -62,6 +107,11 @@ export default function Login() {
           className={classes.input}
           size='small'
           type='email'
+          name='email'
+          value={email}
+          onChange={handleChange}
+          error={emailError}
+          helperText={emailError ? emailError : ''}
         />
         <TextField
           fullWidth
@@ -70,8 +120,16 @@ export default function Login() {
           InputProps={{
             endAdornment: (
               <InputAdornment position='end'>
-                <IconButton aria-label='toggle password visibility' edge='end'>
-                  {true ? (
+                <IconButton
+                  aria-label='toggle password visibility'
+                  edge='end'
+                  onClick={() =>
+                    setIsPasswordVisible(
+                      (isPasswordVisible) => !isPasswordVisible
+                    )
+                  }
+                >
+                  {!isPasswordVisible ? (
                     <Visibility fontSize='small' />
                   ) : (
                     <VisibilityOff fontSize='small' />
@@ -82,7 +140,12 @@ export default function Login() {
           }}
           className={classes.input}
           size='small'
-          type='password'
+          type={isPasswordVisible ? 'text' : 'password'}
+          name='password'
+          value={password}
+          onChange={handleChange}
+          error={passwordError}
+          helperText={passwordError ? passwordError : ''}
         />
         <Button
           variant='contained'
@@ -90,6 +153,10 @@ export default function Login() {
           className={classes.btn}
           disableElevation
           color='primary'
+          disabled={
+            emailError || passwordError || !email || !password ? true : false
+          }
+          type='submit'
         >
           Log In
         </Button>
@@ -109,6 +176,7 @@ export default function Login() {
           fullWidth
           variant='outlined'
           color='primary'
+          onClick={handleGoogleLogin}
         >
           <img
             src='google-icon.svg'

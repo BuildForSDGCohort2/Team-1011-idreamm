@@ -9,13 +9,16 @@
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
     "classnames": "^2.2.6",
+    "firebase": "^7.21.1",
+    "moment": "^2.29.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-dropzone": "^11.2.0",
     "react-helmet": "^6.1.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.3",
-    "react-scroll-to-bottom": "^4.0.0"
+    "react-scroll-to-bottom": "^4.0.0",
+    "validator": "^13.1.17"
   },
   "scripts": {
     "start": "react-scripts start",

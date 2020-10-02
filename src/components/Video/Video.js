@@ -19,7 +19,7 @@ const useStyles = makeStyles({
   },
 });
 
-export default function Video({ url }) {
+export default function Video({ url, upload }) {
   const [isLoading, setIsLoading] = useState(true);
   const [isPlaying, setIsPlaying] = useState(false);
 
@@ -57,6 +57,15 @@ export default function Video({ url }) {
       <Fade in={isLoading} style={{ position: 'absolute' }} timeout={0}>
         <CircularProgress className={classes.loader} />
       </Fade>
+      {upload && upload.post && (
+        <CircularProgress
+          variant='static'
+          value={upload.progress}
+          color='secondary'
+          thickness={5}
+          style={{ position: 'absolute' }}
+        />
+      )}
     </>
   );
 }

@@ -152,6 +152,15 @@ export default function Register({ history }) {
     auth
       .signInWithPopup(provider)
       .then((data) => {
+        data.user.sendEmailVerification();
+        db.collection('users').doc(data.user.uid).set({
+          uid: data.user.uid,
+          email,
+          username,
+          firstName,
+          joined: moment.utc().format(),
+        });
+
         setCurrentUser({
           email: data.user.email,
           uid: data.user.uid,

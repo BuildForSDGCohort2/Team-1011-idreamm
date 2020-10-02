@@ -39,7 +39,7 @@ const useStyles = makeStyles({
   },
 });
 
-export default function Post() {
+export default function Post({ content }) {
   const classes = useStyles();
 
   return (
@@ -54,7 +54,7 @@ export default function Post() {
         </IconButton>
       </header>
       <section className={styles.post__content__section}>
-        <PostContent />
+        <PostContent content={content} />
       </section>
       <section className={styles.post__feedback__section}>
         <div>

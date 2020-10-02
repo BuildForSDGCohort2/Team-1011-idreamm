@@ -7,6 +7,7 @@ import { AuthProvider } from './context/AuthContext';
 import { LoadingProvider } from './context/LoadingContext';
 import { SnackProvider } from './context/SnackContext';
 import { NavigationProvider } from './context/NavigationContext';
+import { FileUploadProvider } from './context/FileUploadContext';
 
 ReactDOM.render(
   <React.StrictMode>
@@ -14,7 +15,9 @@ ReactDOM.render(
       <NavigationProvider>
         <LoadingProvider>
           <SnackProvider>
-            <App />
+            <FileUploadProvider>
+              <App />
+            </FileUploadProvider>
           </SnackProvider>
         </LoadingProvider>
       </NavigationProvider>

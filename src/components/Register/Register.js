@@ -155,13 +155,15 @@ export default function Register({ history }) {
         const user = await db.collection('users').doc(data.user.uid).get();
 
         if (!user.exists) {
-          db.collection('users').doc(data.user.uid).set({
-            uid: data.user.uid,
-            email,
-            username,
-            firstName,
-            joined: moment.utc().format(),
-          });
+          db.collection('users')
+            .doc(data.user.uid)
+            .set({
+              uid: data.user.uid,
+              email: data.user.email,
+              username: data.user.displayName,
+              firstName: data.user.displayName.split(' ')[0],
+              joined: moment.utc().format(),
+            });
         }
 
         setCurrentUser({

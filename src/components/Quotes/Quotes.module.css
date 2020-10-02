@@ -1,0 +1,30 @@
+.container {
+    padding: 0 15px;
+    border-left: 3px solid #f50057;
+    max-height: fit-content;
+    max-width: 250px;
+    display: none;
+}
+
+.container>div:last-child {
+    position: fixed;
+}
+
+.loader__container {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
+
+.loader__container p {
+    margin: 15px;
+}
+
+@media (max-width: 920px) {
+    .container {
+        display: none;
+    }
+}

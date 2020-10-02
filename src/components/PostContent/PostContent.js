@@ -1,14 +1,19 @@
 import React from 'react';
+import Image from '../Image/Image';
+import Video from '../Video/Video';
 
 import styles from './PostContent.module.css';
 
-export default function PostContent() {
+export default function PostContent({ content }) {
   return (
     <div className={styles.post__content}>
-      <img
-        src='https://images.pexels.com/photos/2690323/pexels-photo-2690323.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500'
-        alt=''
-      />
+      {content.type === 'image' ? (
+        <Image url={content.url} />
+      ) : content.type === 'video' ? (
+        <Video url={content.url} />
+      ) : (
+        'Type error'
+      )}
     </div>
   );
 }

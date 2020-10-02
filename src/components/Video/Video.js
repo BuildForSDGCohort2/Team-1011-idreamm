@@ -14,7 +14,6 @@ const useStyles = makeStyles({
     zIndex: 3,
   },
   loader: {
-    color: '#fff',
     zIndex: 3,
   },
 });
@@ -55,7 +54,7 @@ export default function Video({ url, upload }) {
         <PlayCircleOutline className={classes.icon} />
       </Zoom>
       <Fade in={isLoading} style={{ position: 'absolute' }} timeout={0}>
-        <CircularProgress className={classes.loader} />
+        <CircularProgress className={classes.loader} color='secondary' />
       </Fade>
       {upload && upload.post && (
         <CircularProgress

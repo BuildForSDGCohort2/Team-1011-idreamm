@@ -118,7 +118,19 @@ export default function Login({ history }) {
 
     auth
       .signInWithPopup(provider)
-      .then((data) => {
+      .then(async (data) => {
+        const user = await db.collection('users').doc(data.user.uid).get();
+
+        if (!user.exists) {
+          db.collection('users').doc(data.user.uid).set({
+            uid: data.user.uid,
+            email,
+            username,
+            firstName,
+            joined: moment.utc().format(),
+          });
+        }
+
         setCurrentUser({
           email: data.user.email,
           uid: data.user.uid,

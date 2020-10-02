@@ -1,14 +1,21 @@
-import React from 'react';
-import { CircularProgress } from '@material-ui/core';
+import React, { useState } from 'react';
+import { CircularProgress, Fade } from '@material-ui/core';
 
 export default function Image({ url, alt, upload }) {
+  const [isLoading, setIsLoading] = useState(true);
   return (
     <>
       <img
         src={url}
         alt={alt}
-        onLoadedMetadata={() => URL.revokeObjectURL(url)}
+        onLoad={() => {
+          URL.revokeObjectURL(url);
+          setIsLoading(false);
+        }}
       />
+      <Fade in={isLoading} style={{ position: 'absolute' }} timeout={0}>
+        <CircularProgress color='secondary' />
+      </Fade>
       {upload && upload.post && (
         <CircularProgress
           variant='static'

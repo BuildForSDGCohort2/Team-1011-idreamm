@@ -10,6 +10,7 @@ import {
 } from '../../components';
 import { NavigationContext } from '../../context/NavigationContext';
 import { NewPostProvider } from '../../context/NewPostContext';
+import { PostsProvider } from '../../context/PostsContext';
 
 import styles from './HomeScreen.module.css';
 
@@ -21,25 +22,27 @@ export default function HomeScreen() {
         <title>iDreamm</title>
       </Helmet>
       <NewPostProvider>
-        <div className={styles.container}>
-          <AppBar />
-          <div className={styles.app__content__container}>
-            <main className={styles.app__content}>
-              {currentPage === 'home' ? (
-                <HomePage />
-              ) : currentPage === 'messenger' ? (
-                <MessengerPage />
-              ) : currentPage === 'newpost' ? (
-                <NewPostPage />
-              ) : (
-                <ProfilePage />
-              )}
-            </main>
+        <PostsProvider>
+          <div className={styles.container}>
+            <AppBar />
+            <div className={styles.app__content__container}>
+              <main className={styles.app__content}>
+                {currentPage === 'home' ? (
+                  <HomePage />
+                ) : currentPage === 'messenger' ? (
+                  <MessengerPage />
+                ) : currentPage === 'newpost' ? (
+                  <NewPostPage />
+                ) : (
+                  <ProfilePage />
+                )}
+              </main>
+            </div>
+            <div className={styles.app__menu__container}>
+              <AppMenu />
+            </div>
           </div>
-          <div className={styles.app__menu__container}>
-            <AppMenu />
-          </div>
-        </div>
+        </PostsProvider>
       </NewPostProvider>
     </>
   );

@@ -79,6 +79,7 @@ export default function PostPreview() {
               multiline
               value={comment}
               onChange={(e) => setComment(e.target.value)}
+              disabled={post ? true : false}
             />
             <Button
               color='primary'

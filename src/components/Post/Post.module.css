@@ -2,6 +2,7 @@
     border: 1px solid #ddd;
     max-width: 620px;
     border-radius: 3px;
+    margin: 0 auto;
     margin-bottom: 50px;
     background: #fff;
 }
@@ -23,7 +24,7 @@
 .post__content__section {
     display: flex;
     min-height: 200px;
-    max-height: 760px;
+    max-height: 600px;
 }
 
 .post__feedback__section {

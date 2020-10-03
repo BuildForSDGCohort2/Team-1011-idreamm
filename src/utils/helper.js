@@ -59,4 +59,31 @@ const validatePassword = (password) => {
   return null;
 };
 
-export { validateEmail, validatePassword, validateUserName, validateFirstName };
+const truncateText = (text) => {
+  if (text.length > 100) {
+    return text.substr(0, 100) + '...';
+  }
+
+  return null;
+};
+
+const formatLikes = (num) => {
+  if (num === 0) {
+    return '';
+  } else if (num === 1) {
+    return '1 like';
+  } else {
+    return Math.abs(num) > 999
+      ? Math.sign(num) * (Math.abs(num) / 1000).toFixed(1) + 'K likes'
+      : Math.sign(num) * Math.abs(num) + ' likes';
+  }
+};
+
+export {
+  validateEmail,
+  validatePassword,
+  validateUserName,
+  validateFirstName,
+  truncateText,
+  formatLikes,
+};

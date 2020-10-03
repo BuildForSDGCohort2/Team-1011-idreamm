@@ -3,6 +3,7 @@ import Post from '../Post/Post';
 import { PostsContext } from '../../context/PostsContext';
 import styles from './HomePage.module.css';
 import { CircularProgress, Typography } from '@material-ui/core';
+// import LazyLoad from 'react-lazyload';
 
 export default function HomePage() {
   const { posts, isLoading } = useContext(PostsContext);

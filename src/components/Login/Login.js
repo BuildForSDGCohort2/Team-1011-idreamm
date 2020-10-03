@@ -11,8 +11,9 @@ import {
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import firebase from 'firebase/app';
+import moment from 'moment';
 import { validateEmail, validatePassword } from '../../utils/helper';
-import { auth } from '../../utils/firebase';
+import { auth, db } from '../../utils/firebase';
 import { AuthContext } from '../../context/AuthContext';
 import { LoadingContext } from '../../context/LoadingContext';
 import { SnackContext } from '../../context/SnackContext';
@@ -129,6 +130,7 @@ export default function Login({ history }) {
               email: data.user.email,
               username: data.user.displayName,
               firstName: data.user.displayName.split(' ')[0],
+              favorites: [],
               joined: moment.utc().format(),
             });
         }

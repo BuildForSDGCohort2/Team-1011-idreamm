@@ -115,6 +115,7 @@ export default function Register({ history }) {
           email,
           username,
           firstName,
+          favorites: [],
           joined: moment.utc().format(),
         });
 
@@ -162,6 +163,7 @@ export default function Register({ history }) {
               email: data.user.email,
               username: data.user.displayName,
               firstName: data.user.displayName.split(' ')[0],
+              favorites: [],
               joined: moment.utc().format(),
             });
         }

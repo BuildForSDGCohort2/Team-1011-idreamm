@@ -60,6 +60,7 @@ const uploadFile = (
             type,
             authorId: user.uid,
             message,
+            likes: [],
             timestamp: moment.utc().format(),
           })
           .then(() => {

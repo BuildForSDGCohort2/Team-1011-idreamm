@@ -1,0 +1,13 @@
+.container {
+    display: flex;
+    align-items: center;
+}
+
+.container>div {
+    display: flex;
+    align-items: center;
+}
+
+.container>div:first-child {
+    min-width: fit-content;
+}

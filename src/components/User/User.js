@@ -15,11 +15,11 @@ const useStyles = makeStyles({
   },
 });
 
-export default function User() {
+export default function User({ selected }) {
   const classes = useStyles();
 
   return (
-    <ListItem className={styles.user} button>
+    <ListItem className={styles.user} button selected={selected}>
       <div>
         <Avatar className={classes.avatar}>L</Avatar>
       </div>

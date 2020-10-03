@@ -1,18 +1,11 @@
 import React, { useContext, useState, useEffect } from 'react';
-import {
-  Avatar,
-  IconButton,
-  InputBase,
-  makeStyles,
-  Typography,
-} from '@material-ui/core';
+import { Avatar, IconButton, makeStyles, Typography } from '@material-ui/core';
 import {
   Favorite,
   FavoriteBorder,
   Loyalty,
   LoyaltyOutlined,
   MoreHoriz,
-  Send,
   Share,
 } from '@material-ui/icons';
 import moment from 'moment';
@@ -22,7 +15,8 @@ import styles from './Post.module.css';
 import { red } from '@material-ui/core/colors';
 import { db } from '../../utils/firebase';
 import { AuthContext } from '../../context/AuthContext';
-import { formatLikes } from '../../utils/helper';
+import { formatLikes, shareFile } from '../../utils/helper';
+import CommentForm from '../CommentForm/CommentForm';
 
 const useStyles = makeStyles({
   avatar: {
@@ -34,10 +28,6 @@ const useStyles = makeStyles({
   smallBtn: {
     height: '40px',
     width: '40px',
-  },
-  inputRoot: {
-    fontSize: '14px',
-    lineHeight: '1.5',
   },
   postTime: {
     fontSize: '12px',
@@ -61,19 +51,12 @@ export default function Post({ content }) {
       setIsLiked(false);
     }
 
-    db.collection('users')
-      .doc(currentUser.uid)
-      .get()
-      .then((snapShot) => {
-        const data = snapShot.data();
-
-        if (data.favorites.includes(content.id)) {
-          setIsFavorite(true);
-        } else {
-          setIsFavorite(false);
-        }
-      });
-  }, [content.likes, currentUser.uid, content.id]);
+    if (content.favorites.includes(currentUser.uid)) {
+      setIsFavorite(true);
+    } else {
+      setIsFavorite(false);
+    }
+  }, [content.likes, content.favorites, currentUser.uid]);
 
   const handleLike = () => {
     setIsLiked((isLiked) => !isLiked);
@@ -90,24 +73,19 @@ export default function Post({ content }) {
 
   const handleFavorite = () => {
     setIsFavorite((isFav) => !isFav);
-    const userRef = db.collection('users').doc(currentUser.uid);
+    const index = content.favorites.indexOf(currentUser.uid);
 
-    userRef.get().then((snapShot) => {
-      const data = snapShot.data();
-      const index = data.favorites.indexOf(content.id);
-
-      if (index === -1) {
-        data.favorites.push(content.id);
-        userRef.update({
-          favorites: data.favorites,
-        });
-      } else {
-        data.favorites.splice(index, 1);
-        userRef.update({
-          favorites: data.favorites,
-        });
-      }
-    });
+    if (index === -1) {
+      content.favorites.push(currentUser.uid);
+      db.collection('posts')
+        .doc(content.id)
+        .update({ favorites: content.favorites });
+    } else {
+      content.favorites.splice(index, 1);
+      db.collection('posts')
+        .doc(content.id)
+        .update({ favorites: content.favorites });
+    }
   };
 
   return (
@@ -141,7 +119,11 @@ export default function Post({ content }) {
                 <FavoriteBorder />
               )}
             </IconButton>
-            <IconButton className={classes.smallBtn} color='inherit'>
+            <IconButton
+              className={classes.smallBtn}
+              color='inherit'
+              onClick={() => shareFile(content.url, content.type)}
+            >
               <Share />
             </IconButton>
           </div>
@@ -166,7 +148,7 @@ export default function Post({ content }) {
           </Typography>
         </div>
         <div>
-          <PostComments authorComment={content.message} />
+          <PostComments authorComment={content.message} postId={content.id} />
         </div>
         <div>
           <Typography color='textSecondary' className={classes.postTime}>
@@ -175,21 +157,11 @@ export default function Post({ content }) {
         </div>
       </section>
       <section className={styles.post__comment__section}>
-        <form>
-          <InputBase
-            placeholder='Add a comment'
-            fullWidth
-            multiline
-            classes={{
-              root: classes.inputRoot,
-              input: styles.input,
-            }}
-            rowsMax='4'
-          />
-          <IconButton edge='end' color='inherit'>
-            <Send />
-          </IconButton>
-        </form>
+        <CommentForm
+          postId={content.id}
+          authorId={currentUser.uid}
+          author={currentUser.username}
+        />
       </section>
     </div>
   );

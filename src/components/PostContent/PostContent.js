@@ -7,12 +7,12 @@ import styles from './PostContent.module.css';
 export default function PostContent({ type, url }) {
   return (
     <div className={styles.post__content}>
-      {type === 'image' ? (
+      {/image*/.test(type) ? (
         <Image url={url} />
-      ) : type === 'video' ? (
+      ) : /video*/.test(type) ? (
         <Video url={url} />
       ) : (
-        'Type error'
+        'Content not supported'
       )}
     </div>
   );

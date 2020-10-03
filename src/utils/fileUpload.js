@@ -5,7 +5,6 @@ import { db } from './firebase';
 
 const uploadFile = (
   file,
-  type,
   message,
   user,
   setProgress,
@@ -57,10 +56,11 @@ const uploadFile = (
           .add({
             url: downloadURL,
             author: user.username,
-            type,
+            type: file.type,
             authorId: user.uid,
             message,
             likes: [],
+            favorites: [],
             timestamp: moment.utc().format(),
           })
           .then(() => {

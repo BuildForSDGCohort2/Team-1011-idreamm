@@ -16,15 +16,8 @@ export function FileUploadProvider({ children }) {
 
   useEffect(() => {
     if (post) {
-      const type = /image*/i.test(post.file.type)
-        ? 'image'
-        : /video*/i.test(post.file.type)
-        ? 'video'
-        : 'unknown';
-
       uploadFile(
         post.file,
-        type,
         post.message,
         currentUser,
         setProgress,

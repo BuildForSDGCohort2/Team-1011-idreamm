@@ -130,7 +130,6 @@ export default function Login({ history }) {
               email: data.user.email,
               username: data.user.displayName,
               firstName: data.user.displayName.split(' ')[0],
-              favorites: [],
               joined: moment.utc().format(),
             });
         }

@@ -43,16 +43,6 @@
     align-items: center;
 }
 
-.post__comment__section>form {
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-}
-
-.input {
-    line-height: 3;
-}
-
 @media (max-width: 600px) {
     .post {
         border: none;

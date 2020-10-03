@@ -1,3 +1,32 @@
 .container {
     margin: 8px 0;
 }
+
+.container>div:last-child {
+    margin-top: 8px;
+    padding: 0 8px;
+}
+
+.comments__container {
+    max-height: 150px;
+    overflow-y: auto;
+}
+
+@media (min-width: 768px) {
+    .comments__container::-webkit-scrollbar {
+        width: 5px;
+    }
+
+    .comments__container::-webkit-scrollbar-track {
+        background: #f1f1f1;
+    }
+
+    .comments__container::-webkit-scrollbar-thumb {
+        background: #888;
+        border-radius: 15px;
+    }
+
+    .comments__container::-webkit-scrollbar-thumb:hover {
+        background: #555;
+    }
+}

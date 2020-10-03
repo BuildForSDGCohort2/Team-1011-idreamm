@@ -1,0 +1,9 @@
+.form {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.input {
+    line-height: 3;
+}

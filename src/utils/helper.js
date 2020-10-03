@@ -79,6 +79,35 @@ const formatLikes = (num) => {
   }
 };
 
+const createFile = async (url, type) => {
+  const response = await fetch(url);
+  const data = await response.blob();
+  const metadata = {
+    type,
+  };
+  const file = new File([data], 'test.jpg', metadata);
+
+  return file;
+};
+
+const shareFile = (url, type) => {
+  const file = createFile(url, type);
+
+  if (navigator.canShare && navigator.canShare({ files: [file] })) {
+    navigator
+      .share({
+        files: [file],
+        title: 'iDreamm share',
+        text: 'Share motivational content with your love ones',
+        url: 'https://idreamm.web.app',
+      })
+      .then(() => console.log('Share was successful.'))
+      .catch((error) => console.log('Sharing failed', error));
+  } else {
+    console.log(`Your system doesn't support sharing files.`);
+  }
+};
+
 export {
   validateEmail,
   validatePassword,
@@ -86,4 +115,5 @@ export {
   validateFirstName,
   truncateText,
   formatLikes,
+  shareFile,
 };

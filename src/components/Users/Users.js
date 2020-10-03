@@ -7,7 +7,7 @@ import styles from './Users.module.css';
 export default function Users() {
   return (
     <List className={styles.users}>
-      <User />
+      <User selected={true} />
       <User />
       <User />
       <User />

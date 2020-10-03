@@ -26,11 +26,15 @@ export default function Video({ url, upload }) {
 
   const handleVideo = (e) => {
     if (e.target.paused) {
+      const videos = document.getElementsByTagName('video');
+
+      for (let i = 0; i < videos.length; i++) {
+        videos[i].pause();
+      }
+
       e.target.play();
-      setIsPlaying(true);
     } else {
       e.target.pause();
-      setIsPlaying(false);
     }
   };
 
@@ -43,6 +47,8 @@ export default function Video({ url, upload }) {
       <video
         src={url}
         onClick={handleVideo}
+        onPlay={() => setIsPlaying(true)}
+        onPause={() => setIsPlaying(false)}
         className={styles.video}
         onEnded={() => {
           setIsPlaying(false);

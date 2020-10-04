@@ -15,16 +15,22 @@ const useStyles = makeStyles({
   },
 });
 
-export default function User({ selected }) {
+export default function User({ selected, username, onClick, disabled }) {
   const classes = useStyles();
 
   return (
-    <ListItem className={styles.user} button selected={selected}>
+    <ListItem
+      className={styles.user}
+      button
+      selected={selected}
+      onClick={onClick}
+      disabled={disabled}
+    >
       <div>
-        <Avatar className={classes.avatar}>L</Avatar>
+        <Avatar className={classes.avatar}>{username[0].toUpperCase()}</Avatar>
       </div>
       <div>
-        <Typography className={classes.username}>Lafen Lesley</Typography>
+        <Typography className={classes.username}>{username}</Typography>
         <Typography variant='body2' color='textSecondary'>
           Active now
         </Typography>

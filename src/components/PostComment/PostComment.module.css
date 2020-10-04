@@ -1,6 +1,6 @@
 .container {
-    display: flex;
-    align-items: center;
+    display: grid;
+    grid-template-columns: auto 1fr;
 }
 
 .container>div {
@@ -10,4 +10,15 @@
 
 .container>div:first-child {
     min-width: fit-content;
+}
+
+.container>div:last-child {
+    flex: 1;
+    overflow-x: auto;
+}
+
+@media(min-width: 768px) {
+    .comment::-webkit-scrollbar {
+        display: none;
+    }
 }

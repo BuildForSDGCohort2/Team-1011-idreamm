@@ -1,0 +1,18 @@
+.header__container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-right: 8px;
+}
+
+.search__container {
+    padding: 8px 30px;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+}
+
+.users__container {
+    min-height: 200px;
+}

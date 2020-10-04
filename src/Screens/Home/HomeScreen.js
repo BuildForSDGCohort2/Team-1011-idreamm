@@ -8,6 +8,7 @@ import {
   ProfilePage,
   MessengerPage,
 } from '../../components';
+import { MessagesProvider } from '../../context/MessagesContext';
 import { NavigationContext } from '../../context/NavigationContext';
 import { NewPostProvider } from '../../context/NewPostContext';
 import { PostsProvider } from '../../context/PostsContext';
@@ -23,25 +24,27 @@ export default function HomeScreen() {
       </Helmet>
       <NewPostProvider>
         <PostsProvider>
-          <div className={styles.container}>
-            <AppBar />
-            <div className={styles.app__content__container}>
-              <main className={styles.app__content}>
-                {currentPage === 'home' ? (
-                  <HomePage />
-                ) : currentPage === 'messenger' ? (
-                  <MessengerPage />
-                ) : currentPage === 'newpost' ? (
-                  <NewPostPage />
-                ) : (
-                  <ProfilePage />
-                )}
-              </main>
+          <MessagesProvider>
+            <div className={styles.container}>
+              <AppBar />
+              <div className={styles.app__content__container}>
+                <main className={styles.app__content}>
+                  {currentPage === 'home' ? (
+                    <HomePage />
+                  ) : currentPage === 'messenger' ? (
+                    <MessengerPage />
+                  ) : currentPage === 'newpost' ? (
+                    <NewPostPage />
+                  ) : (
+                    <ProfilePage />
+                  )}
+                </main>
+              </div>
+              <div className={styles.app__menu__container}>
+                <AppMenu />
+              </div>
             </div>
-            <div className={styles.app__menu__container}>
-              <AppMenu />
-            </div>
-          </div>
+          </MessagesProvider>
         </PostsProvider>
       </NewPostProvider>
     </>

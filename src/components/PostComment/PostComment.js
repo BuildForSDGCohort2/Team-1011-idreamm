@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Avatar, makeStyles, Typography } from '@material-ui/core';
 import styles from './PostComment.module.css';
 
@@ -17,10 +17,12 @@ const useStyles = makeStyles({
   comment: {
     fontSize: '14px',
     lineHeight: 1.2,
+    whiteSpace: 'nowrap',
   },
 });
 
 export default function PostComment({ author, comment }) {
+  const [isEllipsis, setIsEllipsis] = useState(true);
   const classes = useStyles();
 
   return (
@@ -30,7 +32,17 @@ export default function PostComment({ author, comment }) {
         <Typography className={classes.author}>{author}</Typography>
       </div>
       <div>
-        <Typography className={classes.comment}>{comment}</Typography>
+        <Typography
+          className={[classes.comment, styles.comment]}
+          style={{
+            textOverflow: isEllipsis ? 'ellipsis' : 'unset',
+            overflow: isEllipsis ? 'hidden' : 'auto',
+          }}
+        >
+          <span onClick={() => setIsEllipsis((isEllipsis) => !isEllipsis)}>
+            {comment}
+          </span>
+        </Typography>
       </div>
     </div>
   );

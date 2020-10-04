@@ -1,9 +1,9 @@
-import React, { createContext, useState } from "react";
+import React, { createContext, useState } from 'react';
 
 export const NavigationContext = createContext();
 
 export function NavigationProvider({ children }) {
-  const [currentPage, setCurrentPage] = useState("home");
+  const [currentPage, setCurrentPage] = useState('messenger');
   return (
     <NavigationContext.Provider value={[currentPage, setCurrentPage]}>
       {children}

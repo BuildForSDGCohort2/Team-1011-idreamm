@@ -29,6 +29,7 @@
 
 .post__feedback__section {
     padding: 16px 16px 12px;
+    box-sizing: border-box;
 }
 
 .post__feedback__section>div:first-child {
@@ -48,24 +49,5 @@
         border: none;
         border-radius: 0;
         margin-bottom: 10px;
-    }
-}
-
-@media (min-width: 768px) {
-    .input::-webkit-scrollbar {
-        width: 5px;
-    }
-
-    .input::-webkit-scrollbar-track {
-        background: #f1f1f1;
-    }
-
-    .input::-webkit-scrollbar-thumb {
-        background: #888;
-        border-radius: 15px;
-    }
-
-    .input::-webkit-scrollbar-thumb:hover {
-        background: #555;
     }
 }

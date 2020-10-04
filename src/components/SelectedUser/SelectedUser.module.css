@@ -1,4 +1,4 @@
-.currentUser {
+.selectedUser {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -6,7 +6,7 @@
     height: 100%;
 }
 
-.currentUser>div:first-child {
+.selectedUser>div:first-child {
     display: flex;
     align-items: center;
 }

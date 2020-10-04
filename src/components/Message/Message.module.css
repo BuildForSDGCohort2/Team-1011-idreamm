@@ -1,5 +1,5 @@
 .sender__container {
-    margin-bottom: 20px;
+    margin: 8px 0px;
     display: flex;
     justify-content: flex-end;
 }
@@ -14,7 +14,7 @@
 }
 
 .receiver__container {
-    margin-bottom: 20px;
+    margin: 8px 0px;
     display: flex;
 }
 

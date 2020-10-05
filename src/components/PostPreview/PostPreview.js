@@ -80,6 +80,7 @@ export default function PostPreview() {
               value={comment}
               onChange={(e) => setComment(e.target.value)}
               disabled={post ? true : false}
+              classes={{ input: 'custom-scrollbar' }}
             />
             <Button
               color='primary'

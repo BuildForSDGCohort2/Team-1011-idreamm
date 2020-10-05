@@ -15,7 +15,6 @@ export function PostsProvider({ children }) {
           ...doc.data(),
           id: doc.id,
         }));
-
         setPosts(posts);
         setIsLoading(false);
       });

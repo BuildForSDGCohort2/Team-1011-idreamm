@@ -5,12 +5,13 @@
 }
 
 .sender__container>div {
+    position: relative;
     width: fit-content;
     max-width: 60%;
     background: #eee;
-    border-top-left-radius: 5px;
-    border-bottom-left-radius: 5px;
-    border-bottom-right-radius: 5px;
+    border-top-left-radius: 7px;
+    border-bottom-left-radius: 7px;
+    border-bottom-right-radius: 7px;
 }
 
 .receiver__container {
@@ -19,10 +20,19 @@
 }
 
 .receiver__container>div {
+    position: relative;
     width: fit-content;
     max-width: 60%;
     border: 1px solid #eee;
-    border-top-right-radius: 5px;
-    border-bottom-left-radius: 5px;
-    border-bottom-right-radius: 5px;
+    border-top-right-radius: 7px;
+    border-bottom-left-radius: 7px;
+    border-bottom-right-radius: 7px;
+}
+
+@media (max-width: 768px) {
+
+    .sender__container>div,
+    .receiver__container>div {
+        max-width: 90%;
+    }
 }

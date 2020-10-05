@@ -24,6 +24,7 @@ export default function MessengerForm() {
   const sendMessage = () => {
     const messageBackup = message;
     setMessage('');
+    document.getElementById('messengerInput').focus();
     if (room && message.trim()) {
       db.collection('rooms')
         .doc(room)

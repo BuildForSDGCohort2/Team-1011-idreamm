@@ -36,7 +36,12 @@ const useStyles = makeStyles({
   },
 });
 
-export default function NewMessageDialog({ open, onClose }) {
+export default function NewMessageDialog({
+  open,
+  onClose,
+  isMobile,
+  mobileCallback,
+}) {
   const [isLoading, setIsLoading] = useState(true);
   const [isCreatingRoom, setIsCreatingRoom] = useState(false);
   const [users, setUsers] = useState([]);
@@ -76,8 +81,10 @@ export default function NewMessageDialog({ open, onClose }) {
       .get()
       .then((room) => {
         if (room.exists) {
-          //Set selectedUser to this user
           setSelectedUser(user);
+          setIsCreatingRoom(false);
+          onClose();
+          isMobile && mobileCallback();
         } else {
           roomRef
             .set({
@@ -92,13 +99,12 @@ export default function NewMessageDialog({ open, onClose }) {
               timestamp: firebase.firestore.Timestamp.now(),
             })
             .then(() => {
-              //Set selectedUser to this user
               setSelectedUser(user);
+              setIsCreatingRoom(false);
+              onClose();
+              isMobile && mobileCallback();
             });
         }
-
-        setIsCreatingRoom(false);
-        onClose();
       })
       .catch(() => {
         setSnack({ open: true, message: 'An error occured, please try again' });

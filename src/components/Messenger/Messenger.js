@@ -6,6 +6,7 @@ import {
   Typography,
 } from '@material-ui/core';
 import { Add } from '@material-ui/icons';
+import cx from 'classnames';
 import SelectedUser from '../SelectedUser/SelectedUser';
 import Users from '../Users/Users';
 import MessengerForm from '../MessengerForm/MessengerForm';
@@ -90,7 +91,7 @@ export default function Messenger() {
       >
         {selectedUser && <SelectedUser />}
       </div>
-      <div className={styles.users__container}>
+      <div className={cx(styles.users__container, 'custom-scrollbar')}>
         {isLoading ? (
           <div className={styles.loader__container}>
             <CircularProgress color='secondary' size={16} />

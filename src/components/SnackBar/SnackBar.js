@@ -15,6 +15,7 @@ export default function SnackBar() {
       autoHideDuration={5000}
       onClose={() => setSnack({ open: false, message: '' })}
       message={snack.message}
+      style={{ width: 'fit-content' }}
     />
   );
 }

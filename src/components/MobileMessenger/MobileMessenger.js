@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useState } from 'react';
 import {
   CircularProgress,
   Dialog,
@@ -52,12 +52,6 @@ export default function MobileMessenger({ users, isGettingUsers }) {
 
   const classes = useStyles();
 
-  useEffect(() => {
-    if (selectedUser) {
-      setIsChatDialog(true);
-    }
-  }, [selectedUser]);
-
   return (
     <div>
       <Dialog
@@ -106,7 +100,7 @@ export default function MobileMessenger({ users, isGettingUsers }) {
               users={users}
               onClick={(user) => {
                 setSelectedUser(user);
-                if (selectedUser === user) setIsChatDialog(true);
+                setIsChatDialog(true);
               }}
               isChatUsers={true}
             />
@@ -117,24 +111,38 @@ export default function MobileMessenger({ users, isGettingUsers }) {
       <NewMessageDialog
         open={isNewMessageDialog}
         onClose={() => setIsNewMessageDialog(false)}
+        isMobile={true}
+        mobileCallback={() => setIsChatDialog(true)}
       />
 
-      <Dialog
-        open={isChatDialog}
-        onClose={() => setIsChatDialog(false)}
-        fullScreen={true}
-      >
-        <div className={styles.chat__container}>
-          <SelectedUser isMobile={true} onBack={() => setIsChatDialog(false)} />
-          <DialogContent
-            dividers={true}
-            className={cx(classes.content, 'custom-scrollbar')}
-          >
-            <Messages />
-          </DialogContent>
-          <MessengerForm />
-        </div>
-      </Dialog>
+      {selectedUser && (
+        <Dialog
+          open={isChatDialog}
+          onClose={() => {
+            setIsChatDialog(false);
+            setSelectedUser(null);
+          }}
+          fullScreen={true}
+        >
+          <div className={styles.chat__container}>
+            <SelectedUser
+              isMobile={true}
+              onBack={() => {
+                setIsChatDialog(false);
+                setSelectedUser(null);
+              }}
+            />
+
+            <DialogContent
+              dividers={true}
+              className={cx(classes.content, 'custom-scrollbar')}
+            >
+              <Messages />
+            </DialogContent>
+            <MessengerForm />
+          </div>
+        </Dialog>
+      )}
     </div>
   );
 }

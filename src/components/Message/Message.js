@@ -6,13 +6,19 @@ import styles from './Message.module.css';
 
 const useStyles = makeStyles({
   text: {
+    minWidth: '100px',
     fontSize: '14.5px',
-    marginRight: '25px',
-    padding: '10px 10px 5px',
+    marginRight: '10px',
+    padding: '10px 10px 15px',
+    wordBreak: 'break-all',
+    msWordBreak: 'break-all',
   },
   time: {
     fontSize: '11px',
-    marginRight: '5px',
+    position: 'absolute',
+    zIndex: 2,
+    right: '5px',
+    bottom: 0,
   },
 });
 

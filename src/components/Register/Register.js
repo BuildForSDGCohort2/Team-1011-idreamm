@@ -106,26 +106,29 @@ export default function Register({ history }) {
     auth
       .createUserWithEmailAndPassword(email, password)
       .then((data) => {
-        data.user.updateProfile({
-          displayName: username,
-        });
-        data.user.sendEmailVerification();
-        db.collection('users').doc(data.user.uid).set({
-          uid: data.user.uid,
-          email,
-          username,
-          firstName,
-          joined: moment.utc().format(),
-        });
+        data.user
+          .updateProfile({
+            displayName: username,
+          })
+          .then(() => {
+            data.user.sendEmailVerification();
+            db.collection('users').doc(data.user.uid).set({
+              uid: data.user.uid,
+              email,
+              username,
+              firstName,
+              joined: moment.utc().format(),
+            });
 
-        setCurrentUser({
-          email: data.user.email,
-          uid: data.user.uid,
-          username,
-        });
+            setCurrentUser({
+              email: data.user.email,
+              uid: data.user.uid,
+              username,
+            });
 
-        setIsLoading(false);
-        history.push('/');
+            setIsLoading(false);
+            history.push('/');
+          });
       })
       .catch((err) => {
         if (err.code === 'auth/email-already-in-use') {

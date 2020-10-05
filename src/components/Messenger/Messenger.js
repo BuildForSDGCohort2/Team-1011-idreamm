@@ -14,6 +14,7 @@ import NewMessageDialog from '../NewMessageDialog/NewMessageDialog';
 import { MessagesContext } from '../../context/MessagesContext';
 import { AuthContext } from '../../context/AuthContext';
 import { SelectedUserContext } from '../../context/SelectedUserContext';
+import MobileMessenger from '../MobileMessenger/MobileMessenger';
 import styles from './Messenger.module.css';
 
 const useStyles = makeStyles({
@@ -28,10 +29,27 @@ const useStyles = makeStyles({
 export default function Messenger() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [users, setUsers] = useState(null);
+  const [isMobile, setIsMobile] = useState(true);
 
   const { messages, isLoading } = useContext(MessagesContext);
   const { currentUser } = useContext(AuthContext);
   const { selectedUser, setSelectedUser } = useContext(SelectedUserContext);
+
+  useEffect(() => {
+    if (window.screen.width < 768) {
+      setIsMobile(true);
+    } else {
+      setIsMobile(false);
+    }
+
+    window.addEventListener('resize', () => {
+      if (window.screen.width < 768) {
+        setIsMobile(true);
+      } else {
+        setIsMobile(false);
+      }
+    });
+  }, []);
 
   useEffect(() => {
     if (messages) {
@@ -47,6 +65,11 @@ export default function Messenger() {
   }, [messages, currentUser.uid]);
 
   const classes = useStyles();
+
+  if (isMobile) {
+    return <MobileMessenger users={users} isGettingUsers={isLoading} />;
+  }
+
   return (
     <div className={styles.messenger__container}>
       <header>
@@ -61,7 +84,10 @@ export default function Messenger() {
           </IconButton>
         </div>
       </header>
-      <div className={styles.currentUser__container}>
+      <div
+        className={styles.currentUser__container}
+        style={{ borderBottom: selectedUser ? '1px solid #ddd' : 'none' }}
+      >
         {selectedUser && <SelectedUser />}
       </div>
       <div className={styles.users__container}>
@@ -85,15 +111,18 @@ export default function Messenger() {
           <Users
             users={users}
             onClick={(user) => setSelectedUser(user)}
-            canSelect={true}
+            isChatUsers={true}
           />
         )}
       </div>
       <div className={styles.messages__container}>
         <Messages />
       </div>
-      <div className={styles.messenger__form__container}>
-        <MessengerForm />
+      <div
+        className={styles.messenger__form__container}
+        style={{ borderTop: selectedUser ? '1px solid #ddd' : 'none' }}
+      >
+        {selectedUser && <MessengerForm />}
       </div>
       <NewMessageDialog
         open={isDialogOpen}

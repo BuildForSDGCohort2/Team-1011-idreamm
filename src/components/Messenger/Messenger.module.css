@@ -21,7 +21,6 @@
 
 .currentUser__container {
     grid-area: c;
-    border-bottom: 1px solid #ddd;
 }
 
 .users__container {
@@ -32,17 +31,7 @@
 
 .messages__container {
     grid-area: m;
-    border-bottom: 1px solid #ddd;
     overflow-y: auto;
-}
-
-.messages__container>div:first-child {
-    padding: 0;
-}
-
-.messages__container>div:first-child>div:first-child {
-    padding: 0 20px;
-    box-sizing: border-box;
 }
 
 .messenger__form__container {
@@ -59,19 +48,4 @@
 
 .loader__container p {
     margin: 15px;
-}
-
-@media (max-width: 768px) {
-    .messenger__container {
-        height: 100%;
-        border: none;
-        grid-template-rows: 60px 1fr 60px;
-        grid-template-columns: none;
-        grid-template-areas: "c""m""f";
-    }
-
-    .messenger__container header,
-    .users__container {
-        display: none;
-    }
 }

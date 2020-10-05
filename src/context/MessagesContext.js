@@ -7,6 +7,7 @@ export const MessagesContext = createContext();
 export function MessagesProvider({ children }) {
   const [messages, setMessages] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [unreadMessages, setUnreadMessages] = useState(0);
   const { currentUser } = useContext(AuthContext);
 
   useEffect(() => {
@@ -39,7 +40,9 @@ export function MessagesProvider({ children }) {
   }, [currentUser.email]);
 
   return (
-    <MessagesContext.Provider value={{ messages, isLoading }}>
+    <MessagesContext.Provider
+      value={{ messages, isLoading, unreadMessages, setUnreadMessages }}
+    >
       {children}
     </MessagesContext.Provider>
   );

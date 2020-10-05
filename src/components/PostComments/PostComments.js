@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { makeStyles, Typography } from '@material-ui/core';
+import cx from 'classnames';
 import { truncateText } from '../../utils/helper';
-import styles from './PostComments.module.css';
 import PostComment from '../PostComment/PostComment';
 import { db } from '../../utils/firebase';
+import styles from './PostComments.module.css';
 
 const useStyles = makeStyles({
   authorComment: {
@@ -58,7 +59,7 @@ export default function PostComments({ authorComment, postId }) {
         )}
       </div>
       <div>
-        <div className={styles.comments__container}>
+        <div className={cx(styles.comments__container, 'custom-scrollbar')}>
           {comments
             .map((comment) => (
               <PostComment

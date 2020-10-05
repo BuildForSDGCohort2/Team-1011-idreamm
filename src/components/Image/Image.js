@@ -3,17 +3,23 @@ import { CircularProgress, Fade } from '@material-ui/core';
 
 export default function Image({ url, alt, upload }) {
   const [isLoading, setIsLoading] = useState(true);
+
   return (
     <>
       <img
         src={url}
         alt={alt}
         onLoad={() => {
-          URL.revokeObjectURL(url);
           setIsLoading(false);
         }}
       />
-      <Fade in={isLoading} style={{ position: 'absolute' }} timeout={0}>
+      <Fade
+        in={isLoading}
+        style={{ position: 'absolute', zIndex: 100 }}
+        timeout={0}
+        unmountOnExit
+        mountOnEnter
+      >
         <CircularProgress color='secondary' />
       </Fade>
       {upload && upload.post && (
@@ -22,7 +28,7 @@ export default function Image({ url, alt, upload }) {
           value={upload.progress}
           color='secondary'
           thickness={5}
-          style={{ position: 'absolute' }}
+          style={{ position: 'absolute', zIndex: 100 }}
         />
       )}
     </>

@@ -29,7 +29,7 @@ export default function FileDrop() {
     <div className={styles.container}>
       <Dropzone
         maxFiles={1}
-        maxSize={50000000}
+        maxSize={15000000}
         multiple={false}
         onDrop={onDrop}
         accept='image/*, video/*'

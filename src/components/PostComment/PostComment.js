@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Avatar, makeStyles, Typography } from '@material-ui/core';
+import cx from 'classnames';
 import styles from './PostComment.module.css';
 
 const useStyles = makeStyles({
@@ -33,7 +34,7 @@ export default function PostComment({ author, comment }) {
       </div>
       <div>
         <Typography
-          className={[classes.comment, styles.comment]}
+          className={cx(classes.comment, styles.comment)}
           style={{
             textOverflow: isEllipsis ? 'ellipsis' : 'unset',
             overflow: isEllipsis ? 'hidden' : 'auto',

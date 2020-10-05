@@ -11,6 +11,7 @@ import cx from 'classnames';
 import { NavigationContext } from '../../context/NavigationContext';
 
 import styles from './AppMenu.module.css';
+import { MessagesContext } from '../../context/MessagesContext';
 
 const useStyles = makeStyles((theme) => ({
   profile_btn: {
@@ -24,6 +25,7 @@ const useStyles = makeStyles((theme) => ({
 export default function AppMenu() {
   const classes = useStyles();
   const [currentPage, setCurrentPage] = useContext(NavigationContext);
+  const { unreadMessages } = useContext(MessagesContext);
 
   return (
     <div className={styles.appbar__menu}>
@@ -44,7 +46,7 @@ export default function AppMenu() {
           className={cx({ [styles.active_menu]: currentPage === 'messenger' })}
           onClick={() => setCurrentPage('messenger')}
         >
-          <Badge badgeContent={4} color='secondary'>
+          <Badge badgeContent={unreadMessages} color='secondary'>
             <MailOutline />
           </Badge>
         </IconButton>

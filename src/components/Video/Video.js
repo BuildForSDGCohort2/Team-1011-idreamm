@@ -1,7 +1,6 @@
+import React, { useEffect, useState } from 'react';
 import { CircularProgress, Fade, makeStyles, Zoom } from '@material-ui/core';
 import { PlayCircleOutline } from '@material-ui/icons';
-import React, { useEffect } from 'react';
-import { useState } from 'react';
 
 import styles from './Video.module.css';
 
@@ -11,10 +10,10 @@ const useStyles = makeStyles({
     color: '#fff',
     cursor: 'pointer',
     pointerEvents: 'none',
-    zIndex: 3,
+    zIndex: 100,
   },
   loader: {
-    zIndex: 3,
+    zIndex: 100,
   },
 });
 
@@ -45,21 +44,31 @@ export default function Video({ url, upload }) {
   return (
     <>
       <video
-        src={url}
         onClick={handleVideo}
         onPlay={() => setIsPlaying(true)}
         onPause={() => setIsPlaying(false)}
         className={styles.video}
         onEnded={() => {
           setIsPlaying(false);
-          URL.revokeObjectURL(url);
         }}
-        onLoadedMetadata={() => setIsLoading(false)}
+        onCanPlay={() => setIsLoading(false)}
+        src={url}
       ></video>
-      <Zoom in={!isPlaying && !isLoading} style={{ position: 'absolute' }}>
+      <Zoom
+        in={!isPlaying && !isLoading}
+        style={{ position: 'absolute' }}
+        unmountOnExit
+        mountOnEnter
+      >
         <PlayCircleOutline className={classes.icon} />
       </Zoom>
-      <Fade in={isLoading} style={{ position: 'absolute' }} timeout={0}>
+      <Fade
+        in={isLoading}
+        style={{ position: 'absolute' }}
+        timeout={0}
+        unmountOnExit
+        mountOnEnter
+      >
         <CircularProgress className={classes.loader} color='secondary' />
       </Fade>
       {upload && upload.post && (

@@ -10,7 +10,7 @@ export default function PostContent({ type, url }) {
       {/image*/.test(type) ? (
         <Image url={url} />
       ) : /video*/.test(type) ? (
-        <Video url={url} />
+        <Video url={url} type={type} />
       ) : (
         'Content not supported'
       )}

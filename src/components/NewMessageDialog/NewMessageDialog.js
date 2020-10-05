@@ -12,6 +12,7 @@ import {
 } from '@material-ui/core/';
 import { Close, Search } from '@material-ui/icons';
 import firebase from 'firebase/app';
+import cx from 'classnames';
 import Users from '../Users/Users';
 import { db } from '../../utils/firebase';
 import { AuthContext } from '../../context/AuthContext';
@@ -110,11 +111,12 @@ export default function NewMessageDialog({ open, onClose }) {
       open={open}
       onClose={!isCreatingRoom && onClose}
       fullScreen={fullScreen}
+      scroll='paper'
     >
       <div className={styles.header__container}>
         <DialogTitle className={classes.title}>New Message</DialogTitle>
         {!isCreatingRoom ? (
-          <IconButton onClick={onClose}>
+          <IconButton onClick={onClose} color='inherit'>
             <Close />
           </IconButton>
         ) : (
@@ -125,16 +127,19 @@ export default function NewMessageDialog({ open, onClose }) {
           />
         )}
       </div>
-      <DialogContent dividers={true} className={classes.content}>
-        <div className={styles.search__container}>
-          <Search className={classes.icon} fontSize='small' />
-          <InputBase
-            className={classes.input}
-            fullWidth
-            placeholder='Search user...'
-            disabled={isCreatingRoom}
-          />
-        </div>
+      <div className={styles.search__container}>
+        <Search className={classes.icon} fontSize='small' />
+        <InputBase
+          className={classes.input}
+          fullWidth
+          placeholder='Search user...'
+          disabled={isCreatingRoom}
+        />
+      </div>
+      <DialogContent
+        dividers={true}
+        className={cx(classes.content, 'custom-scrollbar')}
+      >
         <div className={styles.users__container}>
           {isLoading ? (
             <div>loading</div>

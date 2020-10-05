@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { IconButton, InputBase, makeStyles } from '@material-ui/core';
 import moment from 'moment';
 import { InsertEmoticon, Send } from '@material-ui/icons';
@@ -10,21 +10,20 @@ import styles from './MessengerForm.module.css';
 
 const useStyles = makeStyles({
   inputRoot: {
-    lineHeight: '1.5',
+    lineHeight: '1.4',
   },
 });
 
 export default function MessengerForm() {
   const [message, setMessage] = useState('');
-  const [isSending, setIsSending] = useState(false);
   const classes = useStyles();
   const { currentUser } = useContext(AuthContext);
   const { selectedUser, room } = useContext(SelectedUserContext);
   const setSnack = useContext(SnackContext)[1];
 
-  const sendMessage = (e) => {
-    e.preventDefault();
-    setIsSending(true);
+  const sendMessage = () => {
+    const messageBackup = message;
+    setMessage('');
     if (room && message.trim()) {
       db.collection('rooms')
         .doc(room)
@@ -33,44 +32,59 @@ export default function MessengerForm() {
           senderId: currentUser.uid,
           sender: currentUser.username,
           text: message.trim(),
+          isRead: false,
           timestamp: moment.utc().format(),
         })
-        .then(() => {
-          setMessage('');
-        })
-        .catch(() =>
+        .catch(() => {
+          setMessage(messageBackup);
           setSnack({
             open: true,
             message: 'An error occured, failed to send message',
-          })
-        )
-        .finally(() => setIsSending(false));
+          });
+        });
     }
   };
 
+  const handleKeyDown = (e) => {
+    if (e.keyCode === 13) {
+      if (!e.shiftKey) {
+        e.preventDefault();
+        sendMessage();
+      }
+    }
+  };
+
+  useEffect(() => {
+    if (selectedUser) {
+      document.getElementById('messengerInput').focus();
+    }
+  }, [selectedUser]);
+
   return (
     <div className={styles.messenger__form}>
-      <IconButton color='inherit' disabled={isSending || !selectedUser}>
+      <IconButton color='inherit' disabled={!selectedUser}>
         <InsertEmoticon />
       </IconButton>
-      <form onSubmit={sendMessage}>
+      <form>
         <InputBase
           placeholder='Type message...'
           fullWidth
-          multiline
           classes={{
             root: classes.inputRoot,
-            input: styles.input,
+            input: 'custom-scrollbar',
           }}
-          rowsMax='4'
+          multiline
+          rowsMax={4}
           value={message}
           onChange={(e) => setMessage(e.target.value)}
-          disabled={isSending || !selectedUser}
+          disabled={!selectedUser}
+          onKeyDown={handleKeyDown}
+          id='messengerInput'
         />
         <IconButton
           color='inherit'
-          type='submit'
-          disabled={!message.trim() || isSending || !selectedUser}
+          onClick={sendMessage}
+          disabled={!message.trim() || !selectedUser}
         >
           <Send />
         </IconButton>

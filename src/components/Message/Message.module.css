@@ -23,10 +23,11 @@
     position: relative;
     width: fit-content;
     max-width: 60%;
-    border: 1px solid #eee;
+    /* border: 1px solid #eee; */
     border-top-right-radius: 7px;
     border-bottom-left-radius: 7px;
     border-bottom-right-radius: 7px;
+    background-color: rgba(59, 160, 255, 0.3);
 }
 
 @media (max-width: 768px) {

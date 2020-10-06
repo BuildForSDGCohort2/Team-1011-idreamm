@@ -8,7 +8,7 @@ const useStyles = makeStyles({
     height: '16px',
     width: '16px',
     background: '#f50057',
-    fontSize: '12px',
+    fontSize: '11px',
   },
   author: {
     fontSize: '14px',

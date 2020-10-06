@@ -1,7 +1,9 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Avatar, IconButton, makeStyles, Typography } from '@material-ui/core';
 import { ArrowBack, MoreHoriz } from '@material-ui/icons';
-import { red } from '@material-ui/core/colors';
+import { blue, red } from '@material-ui/core/colors';
+import moment from 'moment';
+import firebase from 'firebase/app';
 import { SelectedUserContext } from '../../context/SelectedUserContext';
 import styles from './SelectedUser.module.css';
 
@@ -12,12 +14,41 @@ const useStyles = makeStyles({
     marginRight: '10px',
     background: red[500],
   },
+  statusOnline: {
+    color: blue[500],
+    fontWeight: 500,
+    fontSize: '12px',
+  },
+  statusOffline: {
+    color: '#0000008a',
+    fontSize: '12px',
+  },
 });
 
 export default function SelectedUser({ isMobile, onBack }) {
+  const [status, setStatus] = useState('Offline');
   const classes = useStyles();
 
   const { selectedUser } = useContext(SelectedUserContext);
+
+  useEffect(() => {
+    const statusRef = firebase.database().ref('status/' + selectedUser.uid);
+    statusRef.on('value', function (snapshot) {
+      const status = snapshot.val();
+
+      if (status) {
+        if (status.state === 'online') {
+          setStatus('Online');
+        } else {
+          setStatus(
+            moment.utc(status.last_changed).local().calendar().toLowerCase()
+          );
+        }
+      } else {
+        setStatus('Offline');
+      }
+    });
+  }, [selectedUser.uid]);
 
   return (
     <div
@@ -33,7 +64,16 @@ export default function SelectedUser({ isMobile, onBack }) {
         <Avatar className={classes.avatar}>
           {selectedUser.username[0].toUpperCase()}
         </Avatar>
-        <Typography variant='subtitle2'>{selectedUser.username}</Typography>
+        <div>
+          <Typography variant='body2'>{selectedUser.username}</Typography>
+          <Typography
+            className={
+              status === 'Online' ? classes.statusOnline : classes.statusOffline
+            }
+          >
+            {status}
+          </Typography>
+        </div>
       </div>
       <div>
         <IconButton edge={isMobile ? '' : 'end'} color='inherit'>

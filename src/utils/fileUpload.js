@@ -16,9 +16,9 @@ const uploadFile = (
   let fileRef;
 
   if (/image*/i.test(file.type)) {
-    fileRef = storageRef.child(`images/${user.email}/${file.name}`);
+    fileRef = storageRef.child(`posts/images/${user.email}/${file.name}`);
   } else if (/video*/i.test(file.type)) {
-    fileRef = storageRef.child(`videos/${user.email}/${file.name}`);
+    fileRef = storageRef.child(`posts/videos/${user.email}/${file.name}`);
   }
 
   const uploadTask = fileRef.put(file);

@@ -12,6 +12,7 @@ const useStyles = makeStyles({
     padding: '10px 10px 15px',
     wordBreak: 'break-all',
     msWordBreak: 'break-all',
+    color: '#000',
   },
   time: {
     fontSize: '11px',
@@ -19,6 +20,7 @@ const useStyles = makeStyles({
     zIndex: 2,
     right: '5px',
     bottom: 0,
+    fontWeight: 400,
   },
 });
 

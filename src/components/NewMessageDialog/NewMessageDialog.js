@@ -45,6 +45,7 @@ export default function NewMessageDialog({
   const [isLoading, setIsLoading] = useState(true);
   const [isCreatingRoom, setIsCreatingRoom] = useState(false);
   const [users, setUsers] = useState([]);
+  const [usersBackup, setUsersBackup] = useState([]);
 
   const classes = useStyles();
   const theme = useTheme();
@@ -55,17 +56,20 @@ export default function NewMessageDialog({
   const setSnack = useContext(SnackContext)[1];
 
   useEffect(() => {
-    db.collection('users')
-      .get()
-      .then((snapShot) => {
-        const users = snapShot.docs
+    try {
+      db.collection('users').onSnapshot((snapshot) => {
+        const users = snapshot.docs
           .map((doc) => doc.data())
           .filter((user) => user.uid !== currentUser.uid);
         setUsers(users);
-      })
-      .catch(() => setSnack({ open: true, message: 'Failed to get users' }))
-      .finally(() => setIsLoading(false));
-  }, [currentUser.uid, setSnack]);
+        setUsersBackup(users);
+      });
+    } catch (err) {
+      setSnack({ open: true, message: 'Failed to get users' });
+    } finally {
+      setIsLoading(false);
+    }
+  }, [currentUser.uid, setSnack, open]);
 
   const createRoom = (user) => {
     setIsCreatingRoom(true);
@@ -112,6 +116,17 @@ export default function NewMessageDialog({
       });
   };
 
+  const handleSearch = (e) => {
+    const { value } = e.target;
+
+    if (!value) {
+      setUsers(usersBackup);
+    } else {
+      const regex = new RegExp(value, 'ig');
+      setUsers(usersBackup.filter((user) => regex.test(user.username)));
+    }
+  };
+
   return (
     <Dialog
       open={open}
@@ -140,6 +155,7 @@ export default function NewMessageDialog({
           fullWidth
           placeholder='Search user...'
           disabled={isCreatingRoom}
+          onChange={handleSearch}
         />
       </div>
       <DialogContent

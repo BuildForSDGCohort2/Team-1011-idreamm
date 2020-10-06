@@ -8,16 +8,16 @@ export function PostsProvider({ children }) {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    db.collection('posts')
-      .orderBy('timestamp', 'desc')
-      .onSnapshot((snapshot) => {
-        const posts = snapshot.docs.map((doc) => ({
-          ...doc.data(),
-          id: doc.id,
-        }));
-        setPosts(posts);
-        setIsLoading(false);
-      });
+    // db.collection('posts')
+    //   .orderBy('timestamp', 'desc')
+    //   .onSnapshot((snapshot) => {
+    //     const posts = snapshot.docs.map((doc) => ({
+    //       ...doc.data(),
+    //       id: doc.id,
+    //     }));
+    //     setPosts(posts);
+    //     setIsLoading(false);
+    //   });
   }, []);
   return (
     <PostsContext.Provider value={{ posts, isLoading }}>

@@ -19,12 +19,14 @@ export function AuthProvider({ children }) {
             email: user.email,
             uid: user.uid,
             username: user.displayName,
+            joined: user.joined
           })
         );
         setCurrentUser({
           email: user.email,
           uid: user.uid,
           username: user.displayName,
+          joined: user.joined
         });
 
         // Create a reference to this user's specific status node.

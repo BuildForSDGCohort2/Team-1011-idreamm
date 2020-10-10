@@ -4,7 +4,7 @@ import { db } from '../utils/firebase';
 export const PostsContext = createContext();
 
 export function PostsProvider({ children }) {
-  const [posts, setPosts] = useState(null);
+  const [posts, setPosts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {

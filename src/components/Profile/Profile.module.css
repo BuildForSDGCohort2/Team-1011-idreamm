@@ -1,0 +1,32 @@
+.container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 220px;
+    margin: 0 auto;
+}
+
+.container>div:first-child {
+    flex: 1;
+    max-width: 300px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.container>div:last-child {
+    flex: 1.5;
+}
+
+.cameraBtn__container {
+    background: #fafafa;
+    padding: 5px;
+    border-radius: 50%;
+}
+
+@media(max-width: 599.95px) {
+    .cameraBtn__container {
+        transform: scale(0.8);
+    }
+}

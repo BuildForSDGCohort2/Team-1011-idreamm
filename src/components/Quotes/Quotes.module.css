@@ -3,7 +3,6 @@
     border-left: 3px solid #f50057;
     max-height: fit-content;
     max-width: 250px;
-    display: none;
 }
 
 .container>div:last-child {
@@ -21,10 +20,4 @@
 
 .loader__container p {
     margin: 15px;
-}
-
-@media (max-width: 920px) {
-    .container {
-        display: none;
-    }
 }

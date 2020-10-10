@@ -9,7 +9,7 @@ const useStyles = makeStyles({
 });
 
 export default function Quotes() {
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [quote, setQuote] = useState(null);
   const classes = useStyles();
 

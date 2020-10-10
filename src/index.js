@@ -8,6 +8,8 @@ import { LoadingProvider } from './context/LoadingContext';
 import { SnackProvider } from './context/SnackContext';
 import { NavigationProvider } from './context/NavigationContext';
 import { FileUploadProvider } from './context/FileUploadContext';
+import { DpUploadProvider } from './context/DpUploadContext';
+import { DarkModeProvider } from './context/DarkModeContext';
 
 ReactDOM.render(
   <React.StrictMode>
@@ -16,7 +18,11 @@ ReactDOM.render(
         <LoadingProvider>
           <SnackProvider>
             <FileUploadProvider>
-              <App />
+              <DpUploadProvider>
+                <DarkModeProvider>
+                  <App />
+                </DarkModeProvider>
+              </DpUploadProvider>
             </FileUploadProvider>
           </SnackProvider>
         </LoadingProvider>

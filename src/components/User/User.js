@@ -14,7 +14,7 @@ import { AuthContext } from '../../context/AuthContext';
 import { db } from '../../utils/firebase';
 import styles from './User.module.css';
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   avatar: {
     background: red[500],
     height: '50px',
@@ -29,11 +29,28 @@ const useStyles = makeStyles({
     right: '30px',
   },
   badgeDot: {
-    background: blue[500],
-    border: '2px solid #fff',
-    height: '14px',
-    width: '14px',
-    borderRadius: '50%',
+    backgroundColor: blue[500],
+    color: blue[500],
+    boxShadow: `0 0 0 2px ${theme.palette.background.paper}`,
+    '&::after': {
+      position: 'absolute',
+      width: '100%',
+      height: '100%',
+      borderRadius: '50%',
+      animation: '$ripple 1.2s infinite ease-in-out',
+      border: '1px solid currentColor',
+      content: '""',
+    },
+  },
+  '@keyframes ripple': {
+    '0%': {
+      transform: 'scale(.8)',
+      opacity: 1,
+    },
+    '100%': {
+      transform: 'scale(2.4)',
+      opacity: 0,
+    },
   },
   statusOnline: {
     color: blue[500],
@@ -42,7 +59,7 @@ const useStyles = makeStyles({
   statusOffline: {
     color: '#0000008a',
   },
-});
+}));
 
 export default function User({
   selected,
@@ -53,6 +70,7 @@ export default function User({
 }) {
   const [unread, setUnread] = useState(0);
   const [status, setStatus] = useState('Offline');
+  const [photoUrl, setPhotoUrl] = useState('');
   const classes = useStyles();
   const { messages, setUnreadMessages } = useContext(MessagesContext);
   const { currentUser } = useContext(AuthContext);
@@ -134,6 +152,14 @@ export default function User({
         setStatus('Offline');
       }
     });
+
+    db.collection('users')
+      .doc(user.uid)
+      .get()
+      .then((snapshot) => {
+        const user = snapshot.data();
+        setPhotoUrl(user.photoUrl);
+      });
   }, [user.uid]);
 
   return (
@@ -156,8 +182,8 @@ export default function User({
           classes={{ dot: classes.badgeDot }}
           invisible={status === 'Online' ? false : true}
         >
-          <Avatar className={classes.avatar}>
-            {user.username[0].toUpperCase()}
+          <Avatar className={classes.avatar} src={photoUrl} alt={user.username}>
+            {!photoUrl && user.username[0].toUpperCase()}
           </Avatar>
         </Badge>
       </div>

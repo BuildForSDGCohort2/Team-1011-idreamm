@@ -1,26 +1,12 @@
 import firebase from 'firebase/app';
 import 'firebase/storage';
-import moment from 'moment';
-import { db } from './firebase';
+import { db, auth } from './firebase';
 
-const uploadFile = (
-  file,
-  message,
-  user,
-  setProgress,
-  setComplete,
-  setError
-) => {
+const upLoadDp = (file, user, setProgress, setComplete, setError) => {
+  const fileExtension = file.name.split('.')[file.name.split('.').length - 1];
   // Create a root reference
   const storageRef = firebase.storage().ref();
-  let fileRef;
-
-  if (/image*/i.test(file.type)) {
-    fileRef = storageRef.child(`posts/images/${user.email}/${file.name}`);
-  } else if (/video*/i.test(file.type)) {
-    fileRef = storageRef.child(`posts/videos/${user.email}/${file.name}`);
-  }
-
+  const fileRef = storageRef.child(`displayPhotos/${user.uid + fileExtension}`);
   const uploadTask = fileRef.put(file);
 
   // Register three observers:
@@ -52,24 +38,18 @@ const uploadFile = (
       // Handle successful uploads on complete
       // For instance, get the download URL: https://firebasestorage.googleapis.com/...
       uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
-        db.collection('posts')
-          .add({
-            url: downloadURL,
-            author: user.username,
-            type: file.type,
-            filename: file.name,
-            authorId: user.uid,
-            message,
-            likes: [],
-            favorites: [],
-            timestamp: moment.utc().format(),
-          })
-          .then(() => {
-            setComplete(true);
-          });
+        const promise1 = db.collection('users').doc(user.uid).update({
+          photoUrl: downloadURL,
+        });
+
+        const promise2 = auth.currentUser.updateProfile({
+          photoURL: downloadURL,
+        });
+
+        Promise.all([promise1, promise2]).then(() => setComplete(true));
       });
     }
   );
 };
 
-export default uploadFile;
+export default upLoadDp;

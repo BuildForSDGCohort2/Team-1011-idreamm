@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState, useRef, useCallback } from 'react';
 import {
   CircularProgress,
   Dialog,
@@ -44,13 +44,55 @@ const useStyles = makeStyles({
 });
 
 export default function MobileMessenger({ users, isGettingUsers }) {
-  const [isNewMessageDialog, setIsNewMessageDialog] = useState(false);
-  const [isChatDialog, setIsChatDialog] = useState(false);
+  const [isNewMessageDialog, _setIsNewMessageDialog] = useState(false);
+  const [isChatDialog, _setIsChatDialog] = useState(false);
+
+  const isNewMessageDialogRef = useRef(isNewMessageDialog);
+  const isChatDialogRef = useRef(isChatDialog);
 
   const { selectedUser, setSelectedUser } = useContext(SelectedUserContext);
   const setCurrentPage = useContext(NavigationContext)[1];
+  const setIsMobileMessenger = useContext(NavigationContext)[2];
+
+  const setIsNewMessageDialog = data => {
+    isNewMessageDialogRef.current = data;
+    _setIsNewMessageDialog(data);
+  }
+
+  const setIsChatDialog = data => {
+    isChatDialogRef.current = data;
+    _setIsChatDialog(data);
+  }
 
   const classes = useStyles();
+
+  const handleNavigation = useCallback(e => {
+      e.stopPropagation();
+      e.preventDefault();
+      window.history.pushState(null, document.title, window.location.href);
+      
+      if(isChatDialogRef.current){
+        setIsChatDialog(false);
+        setSelectedUser(null);
+      } else if(isNewMessageDialogRef.current){
+        setIsNewMessageDialog(false);
+      } else {
+        setCurrentPage('home');
+      }
+  
+    }, [setCurrentPage, setSelectedUser])
+
+  useEffect(() => {
+    setIsMobileMessenger(true);
+    // Add actual page to history
+    window.history.pushState(null, document.title, window.location.href)
+
+    window.addEventListener('popstate', handleNavigation);
+    return () => {
+      window.removeEventListener('popstate', handleNavigation); 
+      setIsMobileMessenger(false)
+    };
+  }, [handleNavigation, setIsMobileMessenger])
 
   return (
     <div>

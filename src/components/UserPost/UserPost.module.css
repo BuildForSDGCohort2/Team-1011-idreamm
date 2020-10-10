@@ -1,0 +1,37 @@
+.container {
+    position: relative;
+    height: 220px;
+    width: 100%;
+    max-width: 320px;
+    margin: 0 5px 10px;
+    box-sizing: border-box;
+}
+
+.container>div:first-child {
+    height: 100%;
+    width: 100%;
+}
+
+.container>div:last-child {
+    height: 40px;
+    padding-right: 10px;
+    background: rgba(0, 0, 0, 0.7);
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-template-areas: "m b";
+    align-items: center;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+@media(max-width: 500px){
+    .container {
+        height: auto;
+        max-height: 600px;
+        max-width: 100%;
+        width: 100vw;
+        margin: 0 0 20px;
+    }
+}

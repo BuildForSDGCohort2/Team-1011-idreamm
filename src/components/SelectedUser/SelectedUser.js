@@ -6,6 +6,7 @@ import moment from 'moment';
 import firebase from 'firebase/app';
 import { SelectedUserContext } from '../../context/SelectedUserContext';
 import styles from './SelectedUser.module.css';
+import { db } from '../../utils/firebase';
 
 const useStyles = makeStyles({
   avatar: {
@@ -26,6 +27,7 @@ const useStyles = makeStyles({
 });
 
 export default function SelectedUser({ isMobile, onBack }) {
+  const [photoUrl, setPhotoUrl] = useState('');
   const [status, setStatus] = useState('Offline');
   const classes = useStyles();
 
@@ -47,6 +49,14 @@ export default function SelectedUser({ isMobile, onBack }) {
       } else {
         setStatus('Offline');
       }
+
+      db.collection('users')
+        .doc(selectedUser.uid)
+        .get()
+        .then((snapshot) => {
+          const user = snapshot.data();
+          setPhotoUrl(user.photoUrl);
+        });
     });
   }, [selectedUser.uid]);
 
@@ -61,9 +71,11 @@ export default function SelectedUser({ isMobile, onBack }) {
             <ArrowBack />
           </IconButton>
         )}
-        <Avatar className={classes.avatar}>
-          {selectedUser.username[0].toUpperCase()}
-        </Avatar>
+        <Avatar
+          className={classes.avatar}
+          src={photoUrl}
+          alt={selectedUser.username}
+        />
         <div>
           <Typography variant='body2'>{selectedUser.username}</Typography>
           <Typography

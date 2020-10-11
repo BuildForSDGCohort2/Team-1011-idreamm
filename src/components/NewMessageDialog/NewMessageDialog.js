@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState, forwardRef } from 'react';
 import {
   CircularProgress,
   Dialog,
@@ -7,6 +7,7 @@ import {
   IconButton,
   InputBase,
   makeStyles,
+  Slide,
   useMediaQuery,
   useTheme,
 } from '@material-ui/core/';
@@ -34,6 +35,10 @@ const useStyles = makeStyles({
   loader: {
     marginRight: '8px',
   },
+});
+
+const Transition = forwardRef(function Transition(props, ref) {
+  return <Slide direction="up" ref={ref} {...props} />;
 });
 
 export default function NewMessageDialog({
@@ -133,6 +138,7 @@ export default function NewMessageDialog({
       onClose={!isCreatingRoom && onClose}
       fullScreen={fullScreen}
       scroll='paper'
+      TransitionComponent={Transition}
     >
       <div className={styles.header__container}>
         <DialogTitle className={classes.title}>New Message</DialogTitle>

@@ -4,7 +4,7 @@ import User from '../User/User';
 import { SelectedUserContext } from '../../context/SelectedUserContext';
 import styles from './Users.module.css';
 
-export default function Users({ users, onClick, disabled, isChatUsers }) {
+export default function Users({ users, onClick, disabled, isChatUsers, disableSelect }) {
   const { selectedUser } = useContext(SelectedUserContext);
   return (
     <List className={styles.users}>
@@ -16,7 +16,7 @@ export default function Users({ users, onClick, disabled, isChatUsers }) {
             onClick={() => onClick(user)}
             disabled={disabled}
             selected={
-              isChatUsers && selectedUser && user.uid === selectedUser.uid
+              isChatUsers && selectedUser && user.uid === selectedUser.uid && !disableSelect
             }
             isChatUser={isChatUsers}
           />

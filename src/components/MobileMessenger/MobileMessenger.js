@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState, useRef, useCallback } from 'react';
+import React, { useContext, useEffect, useState, useRef, useCallback, forwardRef } from 'react';
 import {
   CircularProgress,
   Dialog,
@@ -6,6 +6,7 @@ import {
   DialogTitle,
   IconButton,
   makeStyles,
+  Slide,
   Typography,
 } from '@material-ui/core';
 import { Add, ArrowBack } from '@material-ui/icons';
@@ -43,9 +44,18 @@ const useStyles = makeStyles({
   },
 });
 
+const TransitionUp = forwardRef(function TransitionUp(props, ref) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
+
+const TransitionLeft = forwardRef(function TransitionLeft(props, ref) {
+  return <Slide direction="left" ref={ref} {...props} />;
+});
+
 export default function MobileMessenger({ users, isGettingUsers }) {
   const [isNewMessageDialog, _setIsNewMessageDialog] = useState(false);
   const [isChatDialog, _setIsChatDialog] = useState(false);
+  const [isOpen, setIsOpen] = useState(true);
 
   const isNewMessageDialogRef = useRef(isNewMessageDialog);
   const isChatDialogRef = useRef(isChatDialog);
@@ -66,21 +76,34 @@ export default function MobileMessenger({ users, isGettingUsers }) {
 
   const classes = useStyles();
 
+  const closeMessenger = useCallback(() => {
+    setIsOpen(false);
+    setTimeout(() => {
+      setCurrentPage('home');
+    }, 150)
+  }, [setCurrentPage])
+  
+  const closeChat = useCallback(() => {
+    setIsChatDialog(false);      
+    setTimeout(() => {
+      setSelectedUser(null);
+    }, 300)
+  }, [setSelectedUser])
+
   const handleNavigation = useCallback(e => {
       e.stopPropagation();
       e.preventDefault();
       window.history.pushState(null, document.title, window.location.href);
       
       if(isChatDialogRef.current){
-        setIsChatDialog(false);
-        setSelectedUser(null);
+        closeChat()
       } else if(isNewMessageDialogRef.current){
         setIsNewMessageDialog(false);
       } else {
-        setCurrentPage('home');
+        closeMessenger();
       }
   
-    }, [setCurrentPage, setSelectedUser])
+    }, [closeChat, closeMessenger])
 
   useEffect(() => {
     setIsMobileMessenger(true);
@@ -93,19 +116,21 @@ export default function MobileMessenger({ users, isGettingUsers }) {
       setIsMobileMessenger(false)
     };
   }, [handleNavigation, setIsMobileMessenger])
+  
 
   return (
     <div>
       <Dialog
-        open={true}
+        open={isOpen}
         fullScreen={true}
         scroll='paper'
-        onClose={() => setCurrentPage('home')}
+        onClose={closeMessenger}
         className={styles.selectUser__container}
+        TransitionComponent={TransitionUp}
       >
         <header>
           <div>
-            <IconButton onClick={() => setCurrentPage('home')} color='inherit'>
+            <IconButton onClick={closeMessenger} color='inherit'>
               <ArrowBack />
             </IconButton>
             <DialogTitle className={classes.title}>Messenger</DialogTitle>
@@ -145,6 +170,7 @@ export default function MobileMessenger({ users, isGettingUsers }) {
                 setIsChatDialog(true);
               }}
               isChatUsers={true}
+              disableSelect
             />
           )}
         </DialogContent>
@@ -160,19 +186,14 @@ export default function MobileMessenger({ users, isGettingUsers }) {
       {selectedUser && (
         <Dialog
           open={isChatDialog}
-          onClose={() => {
-            setIsChatDialog(false);
-            setSelectedUser(null);
-          }}
+          onClose={closeChat}
           fullScreen={true}
+          TransitionComponent={TransitionLeft}
         >
           <div className={styles.chat__container}>
             <SelectedUser
               isMobile={true}
-              onBack={() => {
-                setIsChatDialog(false);
-                setSelectedUser(null);
-              }}
+              onBack={closeChat}
             />
 
             <DialogContent

@@ -208,7 +208,7 @@ export default function Register({ history }) {
         <TextField
           fullWidth
           label='First name'
-          variant='filled'
+          variant='outlined'
           className={classes.input}
           size='small'
           type='text'
@@ -222,7 +222,7 @@ export default function Register({ history }) {
         <TextField
           fullWidth
           label='Username'
-          variant='filled'
+          variant='outlined'
           className={classes.input}
           size='small'
           type='text'
@@ -236,7 +236,7 @@ export default function Register({ history }) {
         <TextField
           fullWidth
           label='Email'
-          variant='filled'
+          variant='outlined'
           className={classes.input}
           size='small'
           type='email'
@@ -250,7 +250,7 @@ export default function Register({ history }) {
         <TextField
           fullWidth
           label='Password'
-          variant='filled'
+          variant='outlined'
           InputProps={{
             endAdornment: (
               <InputAdornment position='end'>

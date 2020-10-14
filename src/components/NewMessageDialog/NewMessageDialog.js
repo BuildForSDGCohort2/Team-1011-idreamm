@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState, forwardRef } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   CircularProgress,
   Dialog,
@@ -7,7 +7,6 @@ import {
   IconButton,
   InputBase,
   makeStyles,
-  Slide,
   useMediaQuery,
   useTheme,
 } from '@material-ui/core/';
@@ -24,7 +23,8 @@ import styles from './NewMessageDialog.module.css';
 const useStyles = makeStyles({
   content: {
     padding: 0,
-    minWidth: '350px',
+    width: '100vw',
+    maxWidth: '400px',
   },
   icon: {
     color: '#0000008a',
@@ -35,10 +35,6 @@ const useStyles = makeStyles({
   loader: {
     marginRight: '8px',
   },
-});
-
-const Transition = forwardRef(function Transition(props, ref) {
-  return <Slide direction="up" ref={ref} {...props} />;
 });
 
 export default function NewMessageDialog({
@@ -80,9 +76,9 @@ export default function NewMessageDialog({
     setIsCreatingRoom(true);
 
     const room =
-      user.email > currentUser.email
-        ? `${user.email}-${currentUser.email}`
-        : `${currentUser.email}-${user.email}`;
+      user.uid > currentUser.uid
+        ? `${user.uid}-${currentUser.uid}`
+        : `${currentUser.uid}-${user.uid}`;
 
     const roomRef = db.collection('rooms').doc(room);
 
@@ -97,14 +93,7 @@ export default function NewMessageDialog({
         } else {
           roomRef
             .set({
-              participants: [
-                { username: user.username, uid: user.uid, email: user.email },
-                {
-                  username: currentUser.username,
-                  uid: currentUser.uid,
-                  email: currentUser.email,
-                },
-              ],
+              participants: [user.uid, currentUser.uid],
               timestamp: firebase.firestore.Timestamp.now(),
             })
             .then(() => {
@@ -132,13 +121,18 @@ export default function NewMessageDialog({
     }
   };
 
+  const handleClose = () => {
+    if (!isCreatingRoom) {
+      onClose();
+    }
+  };
+
   return (
     <Dialog
       open={open}
-      onClose={!isCreatingRoom && onClose}
+      onClose={handleClose}
       fullScreen={fullScreen}
       scroll='paper'
-      TransitionComponent={Transition}
     >
       <div className={styles.header__container}>
         <DialogTitle className={classes.title}>New Message</DialogTitle>

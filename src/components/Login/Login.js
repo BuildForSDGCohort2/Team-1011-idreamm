@@ -173,7 +173,7 @@ export default function Login({ history }) {
         <TextField
           fullWidth
           label='Email'
-          variant='filled'
+          variant='outlined'
           className={classes.input}
           size='small'
           type='email'
@@ -187,7 +187,7 @@ export default function Login({ history }) {
         <TextField
           fullWidth
           label='Password'
-          variant='filled'
+          variant='outlined'
           InputProps={{
             endAdornment: (
               <InputAdornment position='end'>

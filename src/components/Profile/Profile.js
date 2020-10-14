@@ -1,4 +1,4 @@
-import React, {useContext, useEffect} from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   Avatar,
   Badge,
@@ -16,6 +16,7 @@ import { SnackContext } from '../../context/SnackContext';
 import { NewDpContext } from '../../context/NewDpContext';
 import { DpUploadContext } from '../../context/DpUploadContext';
 import { AuthContext } from '../../context/AuthContext';
+import ProfileUpdateDialog from '../ProfileUpdateDialog/ProfileUpdateDialog';
 import styles from './Profile.module.css';
 
 const useStyles = makeStyles((theme) => ({
@@ -45,6 +46,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Profile() {
+  const [isUpdateProfileDialog, setIsUpdateProfileDialog] = useState(false);
   const setSnack = useContext(SnackContext)[1];
   const [file, setFile] = useContext(NewDpContext);
   const { dp, setDp, progress, complete } = useContext(DpUploadContext);
@@ -84,101 +86,109 @@ export default function Profile() {
   }, [complete, setFile]);
 
   return (
-    <div className={styles.container}>
-      <div>
-        <Badge
-          badgeContent={
-            <div className={styles.cameraBtn__container}>
-              {!!dp ? (
-                <CircularProgress
-                  variant='static'
-                  value={progress}
-                  color='secondary'
-                  thickness={5}
-                />
-              ) : !file ? (
-                <IconButton
-                  aria-label='upload picture'
-                  component='span'
-                  color='inherit'
-                  onClick={selectFile}
-                >
-                  <CameraAlt />
-                </IconButton>
-              ) : (
-                <IconButton
-                  aria-label='upload picture'
-                  component='span'
-                  color='inherit'
-                  onClick={uploadDp}
-                >
-                  <Done />
-                </IconButton>
-              )}
-            </div>
-          }
-          anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-          overlap='circle'
-        >
+    <>
+      <div className={styles.container}>
+        <div>
           <Badge
             badgeContent={
               <div className={styles.cameraBtn__container}>
-                <IconButton
-                  aria-label='upload picture'
-                  component='span'
-                  color='inherit'
-                  onClick={() => setFile(null)}
-                >
-                  <Clear />
-                </IconButton>
+                {!!dp ? (
+                  <CircularProgress
+                    variant='static'
+                    value={progress}
+                    color='secondary'
+                    thickness={5}
+                  />
+                ) : !file ? (
+                  <IconButton
+                    aria-label='upload picture'
+                    component='span'
+                    color='inherit'
+                    onClick={selectFile}
+                  >
+                    <CameraAlt />
+                  </IconButton>
+                ) : (
+                  <IconButton
+                    aria-label='upload picture'
+                    component='span'
+                    color='inherit'
+                    onClick={uploadDp}
+                  >
+                    <Done />
+                  </IconButton>
+                )}
               </div>
             }
-            anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
+            anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
             overlap='circle'
-            invisible={!file || !!dp}
           >
-            <Avatar
-              className={classes.avatar}
-              src={
-                (file && file.preview) ||
-                (auth.currentUser && auth.currentUser.photoURL)
+            <Badge
+              badgeContent={
+                <div className={styles.cameraBtn__container}>
+                  <IconButton
+                    aria-label='upload picture'
+                    component='span'
+                    color='inherit'
+                    onClick={() => setFile(null)}
+                  >
+                    <Clear />
+                  </IconButton>
+                </div>
               }
-              alt={auth.currentUser && auth.currentUser.displayName}
-            />
+              anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
+              overlap='circle'
+              invisible={!file || !!dp}
+            >
+              <Avatar
+                className={classes.avatar}
+                src={(file && file.preview) || auth.currentUser?.photoURL}
+                alt={auth.currentUser?.displayName}
+              />
+            </Badge>
           </Badge>
-        </Badge>
+        </div>
+        <div>
+          <Typography className={classes.username}>
+            {auth.currentUser?.displayName}
+          </Typography>
+          <Typography variant='body2'>{auth.currentUser?.email}</Typography>
+          <Typography className={classes.dateJoined}>
+            Joined on {moment.utc(currentUser.joined).local().format('LL')}
+          </Typography>
+          <Button
+            size='small'
+            className={classes.btn}
+            onClick={() => setIsUpdateProfileDialog(true)}
+          >
+            Edit profile
+          </Button>
+          <Button
+            size='small'
+            className={classes.btn}
+            color='secondary'
+            onClick={() => auth.signOut()}
+          >
+            Log out
+          </Button>
+          <input
+            type='file'
+            style={{
+              visibility: 'hidden',
+              position: 'absolute',
+              width: 0,
+              height: 0,
+            }}
+            id='dpSelectInput'
+            onChange={handleSelectedFile}
+            accept='image/*'
+          />
+        </div>
       </div>
-      <div>
-        <Typography className={classes.username}>
-          {currentUser.username}
-        </Typography>
-        <Typography variant="body2">{currentUser.email}</Typography>
-        <Typography className={classes.dateJoined}>
-          Joined on {moment.utc(currentUser.joined).local().format('LL')}
-        </Typography>
-        <Button size='small' className={classes.btn}>
-          Edit profile
-        </Button>
-        <Button
-          size='small'
-          className={classes.btn}
-          color='secondary'
-          onClick={() => auth.signOut()}
-        >
-          Log out
-        </Button>
-        <input
-          type='file'
-          style={{
-            visibility: 'hidden',
-            position: 'absolute',
-            width: 0,
-            height: 0,
-          }}
-          id='dpSelectInput'
-          onChange={handleSelectedFile}
-        />
-      </div>
-    </div>
+      <ProfileUpdateDialog
+        open={isUpdateProfileDialog}
+        onClose={() => setIsUpdateProfileDialog(false)}
+      />
+    </>
   );
 }

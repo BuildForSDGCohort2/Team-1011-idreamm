@@ -13,11 +13,9 @@ export function MessagesProvider({ children }) {
   useEffect(() => {
     db.collection('rooms').onSnapshot((snapshot) => {
       snapshot.docs.forEach((doc) => {
-        const regex = new RegExp(currentUser.email, 'g');
+        const participants = doc.data().participants;
 
-        if (regex.test(doc.id)) {
-          const participants = doc.data().participants;
-
+        if (participants.includes(currentUser.uid)) {
           db.collection('rooms')
             .doc(doc.id)
             .collection('messages')
@@ -37,7 +35,7 @@ export function MessagesProvider({ children }) {
 
       setIsLoading(false);
     });
-  }, [currentUser.email]);
+  }, [currentUser]);
 
   return (
     <MessagesContext.Provider

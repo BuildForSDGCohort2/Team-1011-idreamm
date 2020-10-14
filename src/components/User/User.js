@@ -78,9 +78,9 @@ export default function User({
   useEffect(() => {
     if (isChatUser && messages) {
       const room =
-        user.email > currentUser.email
-          ? `${user.email}-${currentUser.email}`
-          : `${currentUser.email}-${user.email}`;
+        user.uid > currentUser.uid
+          ? `${user.uid}-${currentUser.uid}`
+          : `${currentUser.uid}-${user.uid}`;
 
       const unread = messages[room].messages.filter(
         (message) => message.senderId !== currentUser.uid && !message.isRead
@@ -107,9 +107,9 @@ export default function User({
       );
       setUnread(0);
       const room =
-        user.email > currentUser.email
-          ? `${user.email}-${currentUser.email}`
-          : `${currentUser.email}-${user.email}`;
+        user.uid > currentUser.uid
+          ? `${user.uid}-${currentUser.uid}`
+          : `${currentUser.uid}-${user.uid}`;
 
       const messagesRef = db
         .collection('rooms')
@@ -125,7 +125,7 @@ export default function User({
       });
     }
   }, [
-    currentUser.email,
+    currentUser,
     isChatUser,
     messages,
     selected,

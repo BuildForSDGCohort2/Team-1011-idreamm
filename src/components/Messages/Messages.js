@@ -29,7 +29,7 @@ export default function Messages() {
   const classes = useStyles();
 
   useEffect(() => {
-    if (room && messages[room]) {
+    if (room && messages && messages[room]) {
       const chats = messages[room].messages;
       setChats(chats);
     }

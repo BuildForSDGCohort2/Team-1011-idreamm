@@ -1,6 +1,11 @@
 import validator from 'validator';
+import { db } from './firebase';
 
-const validateUserName = (username) => {
+const validateUserName = (username, allowBlank) => {
+  if (!username && allowBlank) {
+    return null;
+  }
+
   if (!username) {
     return 'Username is required';
   }
@@ -23,7 +28,11 @@ const validateUserName = (username) => {
   return null;
 };
 
-const validateFirstName = (name) => {
+const validateFirstName = (name, allowBlank) => {
+  if (!name && allowBlank) {
+    return null;
+  }
+
   if (!name) {
     return 'First name is required';
   }
@@ -35,7 +44,11 @@ const validateFirstName = (name) => {
   return null;
 };
 
-const validateEmail = (email) => {
+const validateEmail = (email, allowBlank) => {
+  if (!email && allowBlank) {
+    return null;
+  }
+
   if (!email) {
     return 'Email is required';
   }
@@ -47,7 +60,11 @@ const validateEmail = (email) => {
   return null;
 };
 
-const validatePassword = (password) => {
+const validatePassword = (password, allowBlank) => {
+  if (!password && allowBlank) {
+    return null;
+  }
+
   if (!password) {
     return 'Password is required';
   }
@@ -108,6 +125,13 @@ const shareFile = (url, type) => {
   }
 };
 
+const getUserById = async (uid) => {
+  let doc = await db.collection('users').doc(uid).get();
+
+  if (doc.exists) return doc.data();
+  throw new Error('No such user');
+};
+
 export {
   validateEmail,
   validatePassword,
@@ -116,4 +140,5 @@ export {
   truncateText,
   formatLikes,
   shareFile,
+  getUserById,
 };

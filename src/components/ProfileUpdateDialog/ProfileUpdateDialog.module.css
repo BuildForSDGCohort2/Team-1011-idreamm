@@ -1,0 +1,12 @@
+.header__container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-right: 8px;
+}
+
+.form {
+    width: 100%;
+    max-width: 350px;
+    margin: 0 auto;
+}

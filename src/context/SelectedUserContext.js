@@ -12,15 +12,15 @@ export function SelectedUserProvider({ children }) {
   useEffect(() => {
     if (selectedUser) {
       const room =
-        selectedUser.email > currentUser.email
-          ? `${selectedUser.email}-${currentUser.email}`
-          : `${currentUser.email}-${selectedUser.email}`;
+        selectedUser.uid > currentUser.uid
+          ? `${selectedUser.uid}-${currentUser.uid}`
+          : `${currentUser.uid}-${selectedUser.uid}`;
 
       setRoom(room);
     } else {
       setRoom(null);
     }
-  }, [selectedUser, currentUser.email]);
+  }, [selectedUser, currentUser]);
 
   return (
     <SelectedUserContext.Provider

@@ -7,29 +7,31 @@ export function NavigationProvider({ children }) {
 
   const isMobileMessengerRef = useRef(null);
 
-  const setIsMobileMessenger = data => {
+  const setIsMobileMessenger = (data) => {
     isMobileMessengerRef.current = data;
-  }
+  };
 
-  const handleNavigation = e => {
+  const handleNavigation = (e) => {
     e.preventDefault();
 
     window.history.pushState(null, document.title, window.location.href);
-    if(!isMobileMessengerRef.current){
+    if (!isMobileMessengerRef.current) {
       setCurrentPage('home');
     }
-  }
+  };
 
   useEffect(() => {
     // Add actual page to history
-    window.history.pushState(null, document.title, window.location.href)
-  
+    window.history.pushState(null, document.title, window.location.href);
+
     window.addEventListener('popstate', handleNavigation);
     return () => window.removeEventListener('popstate', handleNavigation);
-  }, [])
+  }, []);
 
   return (
-    <NavigationContext.Provider value={[currentPage, setCurrentPage, setIsMobileMessenger]}>
+    <NavigationContext.Provider
+      value={[currentPage, setCurrentPage, setIsMobileMessenger]}
+    >
       {children}
     </NavigationContext.Provider>
   );

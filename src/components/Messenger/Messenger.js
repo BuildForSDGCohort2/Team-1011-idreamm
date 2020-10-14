@@ -17,6 +17,8 @@ import { AuthContext } from '../../context/AuthContext';
 import { SelectedUserContext } from '../../context/SelectedUserContext';
 import MobileMessenger from '../MobileMessenger/MobileMessenger';
 import styles from './Messenger.module.css';
+import { getUserById } from '../../utils/helper';
+import { SnackContext } from '../../context/SnackContext';
 
 const useStyles = makeStyles({
   title: {
@@ -35,6 +37,7 @@ export default function Messenger() {
   const { messages, isLoading } = useContext(MessagesContext);
   const { currentUser } = useContext(AuthContext);
   const { selectedUser, setSelectedUser } = useContext(SelectedUserContext);
+  const setSnack = useContext(SnackContext)[1];
 
   useEffect(() => {
     if (window.screen.width < 768) {
@@ -54,16 +57,22 @@ export default function Messenger() {
 
   useEffect(() => {
     if (messages) {
-      const users = Object.values(messages).map(
-        (message) =>
-          message.participants.filter(
-            (participant) => participant.uid !== currentUser.uid
-          )[0]
-      );
+      const promises = Object.values(messages).map(async (message) => {
+        const userId = message.participants.filter(
+          (participant) => participant !== currentUser.uid
+        )[0];
+        return await getUserById(userId);
+      });
 
-      setUsers(users);
+      Promise.all(promises)
+        .then((users) => {
+          setUsers(users);
+        })
+        .catch(() => {
+          setSnack({ open: true, message: 'Failed to get recent chats' });
+        });
     }
-  }, [messages, currentUser.uid]);
+  }, [messages, currentUser.uid, setSnack]);
 
   const classes = useStyles();
 

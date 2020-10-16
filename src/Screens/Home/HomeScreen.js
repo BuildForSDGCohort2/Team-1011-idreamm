@@ -32,7 +32,10 @@ export default function HomeScreen({ location }) {
               <CallProvider>
                 <div className={styles.container}>
                   <AppBar />
-                  <div className={styles.app__content__container}>
+                  <div
+                    className={styles.app__content__container}
+                    id='scrollableDiv'
+                  >
                     <main className={styles.app__content}>
                       {currentPage === 'home' ? (
                         <HomePage />

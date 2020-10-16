@@ -29,6 +29,7 @@ export default function CallDialog() {
   const { call, setCall, peer } = useContext(CallContext);
   const { currentUser } = useContext(AuthContext);
   const [status, setStatus] = useState('');
+  const [localCall, setLocalCall] = useState(null);
 
   useEffect(() => {
     if (call?.isCalling && peer) {
@@ -58,6 +59,8 @@ export default function CallDialog() {
               const _call = peer.call(userId, stream, {
                 metadata: { type: call.type, room: call.room },
               });
+
+              setLocalCall(_call);
 
               const ringBell = new Audio('./simple_bell_2.mp3');
               ringBell.volume = 0.5;
@@ -128,7 +131,11 @@ export default function CallDialog() {
   };
 
   const rejectCall = () => {
-    call.controller.close();
+    if (localCall) {
+      localCall.close();
+    } else {
+      call.controller.close();
+    }
   };
 
   return (

@@ -8,3 +8,4 @@ export { default as HomePage } from './HomePage/HomePage';
 export { default as MessengerPage } from './MessengerPage/MesssengerPage';
 export { default as NewPostPage } from './NewPostPage/NewPostPage';
 export { default as ProfilePage } from './ProfilePage/ProfilePage';
+export { default as CallDialog } from './CallDialog/CallDialog';

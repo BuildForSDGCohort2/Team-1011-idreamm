@@ -1,12 +1,13 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Avatar, IconButton, makeStyles, Typography } from '@material-ui/core';
-import { ArrowBack, MoreHoriz } from '@material-ui/icons';
+import { ArrowBack, Call, Videocam } from '@material-ui/icons';
 import { blue, red } from '@material-ui/core/colors';
 import moment from 'moment';
 import firebase from 'firebase/app';
 import { SelectedUserContext } from '../../context/SelectedUserContext';
-import styles from './SelectedUser.module.css';
+import { CallContext } from '../../context/CallContext';
 import { db } from '../../utils/firebase';
+import styles from './SelectedUser.module.css';
 
 const useStyles = makeStyles({
   avatar: {
@@ -31,7 +32,8 @@ export default function SelectedUser({ isMobile, onBack }) {
   const [status, setStatus] = useState('Offline');
   const classes = useStyles();
 
-  const { selectedUser } = useContext(SelectedUserContext);
+  const { selectedUser, room } = useContext(SelectedUserContext);
+  const { setCall } = useContext(CallContext);
 
   useEffect(() => {
     const statusRef = firebase.database().ref('status/' + selectedUser.uid);
@@ -59,6 +61,12 @@ export default function SelectedUser({ isMobile, onBack }) {
         });
     });
   }, [selectedUser.uid]);
+
+  const handleAudioCall = () => {
+    setCall({ isCalling: true, type: 'audio', room, caller: true });
+  };
+
+  const handleVideoCall = () => {};
 
   return (
     <div
@@ -88,8 +96,15 @@ export default function SelectedUser({ isMobile, onBack }) {
         </div>
       </div>
       <div>
-        <IconButton edge={isMobile ? '' : 'end'} color='inherit'>
-          <MoreHoriz />
+        <IconButton color='inherit' onClick={handleAudioCall}>
+          <Call />
+        </IconButton>
+        <IconButton
+          edge={isMobile ? '' : 'end'}
+          color='inherit'
+          onClick={handleVideoCall}
+        >
+          <Videocam />
         </IconButton>
       </div>
     </div>

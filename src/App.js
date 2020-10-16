@@ -8,10 +8,10 @@ import {
   PageNotFound,
 } from './screens';
 import ProtectedRoute from './auth/ProtectedRoute';
-import styles from './App.module.css';
 import { LinearProgress } from '@material-ui/core';
 import { SnackBar } from './components';
 import { LoadingContext } from './context/LoadingContext';
+import styles from './App.module.css';
 
 const theme = createMuiTheme({
   palette: {
@@ -30,6 +30,7 @@ export default function App() {
         <Router>
           <Switch>
             <ProtectedRoute path='/' component={HomeScreen} exact />
+            <ProtectedRoute path='/call' component={HomeScreen} exact />
             <Route path='/login' component={LoginScreen} exact />
             <Route path='/register' component={RegisterScreen} exact />
             <Route path='*' component={PageNotFound} exact />

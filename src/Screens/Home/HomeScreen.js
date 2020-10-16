@@ -7,7 +7,9 @@ import {
   NewPostPage,
   ProfilePage,
   MessengerPage,
+  CallDialog,
 } from '../../components';
+import { CallProvider } from '../../context/CallContext';
 import { MessagesProvider } from '../../context/MessagesContext';
 import { NavigationContext } from '../../context/NavigationContext';
 import { NewDpProvider } from '../../context/NewDpContext';
@@ -16,7 +18,7 @@ import { PostsProvider } from '../../context/PostsContext';
 
 import styles from './HomeScreen.module.css';
 
-export default function HomeScreen() {
+export default function HomeScreen({ location }) {
   const [currentPage] = useContext(NavigationContext);
   return (
     <>
@@ -27,25 +29,28 @@ export default function HomeScreen() {
         <NewDpProvider>
           <PostsProvider>
             <MessagesProvider>
-              <div className={styles.container}>
-                <AppBar />
-                <div className={styles.app__content__container}>
-                  <main className={styles.app__content}>
-                    {currentPage === 'home' ? (
-                      <HomePage />
-                    ) : currentPage === 'messenger' ? (
-                      <MessengerPage />
-                    ) : currentPage === 'newpost' ? (
-                      <NewPostPage />
-                    ) : (
-                      <ProfilePage />
-                    )}
-                  </main>
+              <CallProvider>
+                <div className={styles.container}>
+                  <AppBar />
+                  <div className={styles.app__content__container}>
+                    <main className={styles.app__content}>
+                      {currentPage === 'home' ? (
+                        <HomePage />
+                      ) : currentPage === 'messenger' ? (
+                        <MessengerPage />
+                      ) : currentPage === 'newpost' ? (
+                        <NewPostPage />
+                      ) : (
+                        <ProfilePage />
+                      )}
+                    </main>
+                  </div>
+                  <div className={styles.app__menu__container}>
+                    <AppMenu />
+                  </div>
                 </div>
-                <div className={styles.app__menu__container}>
-                  <AppMenu />
-                </div>
-              </div>
+                <CallDialog location={location} />
+              </CallProvider>
             </MessagesProvider>
           </PostsProvider>
         </NewDpProvider>

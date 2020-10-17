@@ -19,15 +19,13 @@ export function PostsProvider({ children }) {
           id: doc.id,
         }));
 
-        setPosts((_posts) => {
-          if (posts.length > _posts.length) {
-            setHasMore(true);
-          } else {
-            setHasMore(false);
-          }
+        if (limit === posts.length) {
+          setHasMore(true);
+        } else {
+          setHasMore(false);
+        }
 
-          return posts;
-        });
+        setPosts(posts);
         setIsLoading(false);
       });
   }, [limit]);

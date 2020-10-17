@@ -66,7 +66,9 @@ export default function SelectedUser({ isMobile, onBack }) {
     setCall({ isCalling: true, type: 'audio', room, caller: true });
   };
 
-  const handleVideoCall = () => {};
+  const handleVideoCall = () => {
+    setCall({ isCalling: true, type: 'video', room, caller: true });
+  };
 
   return (
     <div

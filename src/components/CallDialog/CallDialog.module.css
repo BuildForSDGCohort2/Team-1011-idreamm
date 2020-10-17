@@ -19,14 +19,37 @@
     width: 100%;
     max-width: 700px;
     height: 100%;
-    max-height: 800px;
+    max-height: 900px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
 }
 
-.container>div>div:last-child {
+.mainVideo__container {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.mainVideo__container video,
+.miniVideo__container video {
+    width: 100%;
+    max-height: 100%;
+}
+
+.miniVideo__container {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    height: 150px;
+    width: 80px;
+    display: flex;
+    align-items: flex-end;
+}
+
+.callActions__container {
     position: absolute;
     bottom: 50px;
     height: 100px;

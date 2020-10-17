@@ -26,9 +26,8 @@ const useStyles = makeStyles({
 export default function CallDialog() {
   const [user, setUser] = useState({});
   const classes = useStyles();
-  const { call, setCall, peer } = useContext(CallContext);
+  const { call, setCall, peer, status, setStatus } = useContext(CallContext);
   const { currentUser } = useContext(AuthContext);
-  const [status, setStatus] = useState('');
   const [localCall, setLocalCall] = useState(null);
 
   useEffect(() => {
@@ -45,7 +44,6 @@ export default function CallDialog() {
         });
 
       if (call.caller) {
-        const mediaStream = document.createElement('audio');
         setStatus('Calling');
 
         const userPeerRef = firebase.database().ref('/peer/' + userId);
@@ -54,8 +52,29 @@ export default function CallDialog() {
           const { id: userId } = snapshot.val();
 
           navigator.mediaDevices
-            .getUserMedia({ audio: true })
+            .getUserMedia({
+              audio: { echoCancellation: true, facingMode: 'user' },
+              video: call.type === 'video' ? { facingMode: 'user' } : false,
+            })
             .then((stream) => {
+              const remoteMedia = document.createElement(
+                call.type === 'video' ? 'video' : 'audio'
+              );
+
+              let localVideo;
+
+              if (call.type === 'video') {
+                localVideo = document.createElement('video');
+                localVideo.srcObject = stream;
+                localVideo.muted = true;
+                localVideo.autoplay = true;
+                localVideo.onloadedmetadata = () => {
+                  document
+                    .getElementById('main-video-container')
+                    .appendChild(localVideo);
+                };
+              }
+
               const _call = peer.call(userId, stream, {
                 metadata: { type: call.type, room: call.room },
               });
@@ -79,14 +98,41 @@ export default function CallDialog() {
                   ringBell.currentTime = 0;
                 }
 
-                mediaStream.srcObject = remoteStream;
-                mediaStream.play();
+                if (call.type === 'video') {
+                  remoteMedia.srcObject = remoteStream;
+                  remoteMedia.autoplay = true;
+                  remoteMedia.onloadedmetadata = () => {
+                    document
+                      .getElementById('main-video-container')
+                      .removeChild(localVideo);
+                    document
+                      .getElementById('main-video-container')
+                      .appendChild(remoteMedia);
+                    document
+                      .getElementById('mini-video-container')
+                      .appendChild(localVideo);
+                  };
+                } else {
+                  remoteMedia.srcObject = remoteStream;
+                  remoteMedia.play();
+                }
               });
 
               _call.on('close', () => {
                 setStatus('Call ended');
 
-                mediaStream.remove();
+                remoteMedia.remove();
+                stream.getTracks().forEach((track) => track.stop());
+
+                setTimeout(() => {
+                  setCall({ isCalling: false });
+                }, 2000);
+              });
+
+              _call.on('error', () => {
+                setStatus('Can not connect');
+
+                remoteMedia.remove();
                 stream.getTracks().forEach((track) => track.stop());
 
                 setTimeout(() => {
@@ -95,46 +141,20 @@ export default function CallDialog() {
               });
             });
         });
-      } else {
-        setStatus('Incoming call');
-        call.controller.on('close', () => {
-          setStatus('Call ended');
-          setTimeout(() => {
-            setCall({ isCalling: false });
-          }, 2000);
-        });
       }
     }
-  }, [peer, call, currentUser.uid, setCall]);
+  }, [peer, call, currentUser.uid, setCall, setStatus]);
 
   const answerCall = () => {
     setStatus('Connecting...');
-
-    navigator.mediaDevices.getUserMedia({ audio: true }).then((stream) => {
-      call.controller.answer(stream);
-      const mediaStream = document.createElement('audio');
-
-      call.controller.on('stream', (remoteStream) => {
-        setStatus('');
-        mediaStream.srcObject = remoteStream;
-        mediaStream.play();
-      });
-
-      call.controller.on('close', () => {
-        mediaStream.remove();
-        stream.getTracks().forEach((track) => track.stop());
-      });
-
-      call.ringTone.pause();
-      call.ringTone.currentTime = 0;
-    });
+    call.accept();
   };
 
   const rejectCall = () => {
     if (localCall) {
       localCall.close();
     } else {
-      call.controller.close();
+      call.end();
     }
   };
 
@@ -142,17 +162,30 @@ export default function CallDialog() {
     <Slide in={call.isCalling} direction='up' mountOnEnter unmountOnExit>
       <div className={styles.container}>
         <div>
-          <div>
-            <Avatar
-              className={classes.avatar}
-              alt={user.username?.toUpperCase()}
-              src={user.photoUrl}
-            />
-            <Typography className={classes.username} align='center'>
-              {user.username}
-            </Typography>
-          </div>
-          <div>
+          {call.type === 'audio' ? (
+            <div>
+              <Avatar
+                className={classes.avatar}
+                alt={user.username?.toUpperCase()}
+                src={user.photoUrl}
+              />
+              <Typography className={classes.username} align='center'>
+                {user.username}
+              </Typography>
+            </div>
+          ) : (
+            <>
+              <div
+                id='main-video-container'
+                className={styles.mainVideo__container}
+              ></div>
+              <div
+                id='mini-video-container'
+                className={styles.miniVideo__container}
+              ></div>{' '}
+            </>
+          )}
+          <div className={styles.callActions__container}>
             <Typography align='center'>
               {status ? status : <TimeCodeWrapper />}
             </Typography>

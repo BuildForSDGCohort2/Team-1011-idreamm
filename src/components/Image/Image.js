@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { CircularProgress, Fade } from '@material-ui/core';
+import GliderLoader from '../GlideLoader/GlideLoader';
 
 export default function Image({ url, alt, upload }) {
   const [isLoading, setIsLoading] = useState(true);
@@ -12,15 +13,10 @@ export default function Image({ url, alt, upload }) {
         onLoad={() => {
           setIsLoading(false);
         }}
+        style={{ visibility: isLoading ? 'hidden' : 'visible' }}
       />
-      <Fade
-        in={isLoading}
-        style={{ position: 'absolute', zIndex: 100 }}
-        timeout={0}
-        unmountOnExit
-        mountOnEnter
-      >
-        <CircularProgress color='secondary' />
+      <Fade in={isLoading} unmountOnExit mountOnEnter>
+        <GliderLoader />
       </Fade>
       {upload && upload.post && (
         <CircularProgress

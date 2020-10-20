@@ -3,6 +3,7 @@ import { CircularProgress, Fade, makeStyles, Zoom } from '@material-ui/core';
 import { PlayCircleOutline } from '@material-ui/icons';
 
 import styles from './Video.module.css';
+import GliderLoader from '../GlideLoader/GlideLoader';
 
 const useStyles = makeStyles({
   icon: {
@@ -53,6 +54,7 @@ export default function Video({ url, upload }) {
         }}
         onCanPlay={() => setIsLoading(false)}
         src={url}
+        style={{ visibility: isLoading ? 'hidden' : 'visible' }}
       ></video>
       <Zoom
         in={!isPlaying && !isLoading}
@@ -62,14 +64,8 @@ export default function Video({ url, upload }) {
       >
         <PlayCircleOutline className={classes.icon} />
       </Zoom>
-      <Fade
-        in={isLoading}
-        style={{ position: 'absolute' }}
-        timeout={0}
-        unmountOnExit
-        mountOnEnter
-      >
-        <CircularProgress className={classes.loader} color='secondary' />
+      <Fade in={isLoading} unmountOnExit mountOnEnter>
+        <GliderLoader />
       </Fade>
       {upload && upload.post && (
         <CircularProgress

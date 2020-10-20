@@ -18,6 +18,7 @@ import { AuthContext } from '../../context/AuthContext';
 import { LoadingContext } from '../../context/LoadingContext';
 import { SnackContext } from '../../context/SnackContext';
 import styles from './Login.module.css';
+import ResetPasswordDialog from '../ResetPasswordDialog/ResetPasswordDialog';
 
 const useStyles = makeStyles({
   subtitle: {
@@ -41,6 +42,7 @@ const useStyles = makeStyles({
   },
   forgot_pass: {
     margin: '20px 0',
+    fontWeight: 400,
   },
   google_btn: {
     textTransform: 'initial',
@@ -56,6 +58,7 @@ export default function Login({ history }) {
   const [emailError, setEmailError] = useState(null);
   const [passwordError, setPasswordError] = useState(null);
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+  const [isPRDialog, setIsPRDialog] = useState(false);
 
   const { setCurrentUser } = useContext(AuthContext);
   const [isLoading, setIsLoading] = useContext(LoadingContext);
@@ -162,109 +165,115 @@ export default function Login({ history }) {
   };
 
   return (
-    <div className={styles.container}>
-      <Typography variant='h4' className={classes.brand}>
-        iDreamm
-      </Typography>
-      <Typography className={classes.subtitle} color='textSecondary'>
-        Sign in to continue your journey
-      </Typography>
-      <form className={styles.form} onSubmit={handleLogin}>
-        <TextField
-          fullWidth
-          label='Email'
-          variant='outlined'
-          className={classes.input}
-          size='small'
-          type='email'
-          name='email'
-          value={email}
-          onChange={handleChange}
-          error={emailError}
-          helperText={emailError ? emailError : ''}
-          disabled={isLoading}
-        />
-        <TextField
-          fullWidth
-          label='Password'
-          variant='outlined'
-          InputProps={{
-            endAdornment: (
-              <InputAdornment position='end'>
-                <IconButton
-                  aria-label='toggle password visibility'
-                  edge='end'
-                  onClick={() =>
-                    setIsPasswordVisible(
-                      (isPasswordVisible) => !isPasswordVisible
-                    )
-                  }
-                >
-                  {!isPasswordVisible ? (
-                    <Visibility fontSize='small' />
-                  ) : (
-                    <VisibilityOff fontSize='small' />
-                  )}
-                </IconButton>
-              </InputAdornment>
-            ),
-          }}
-          className={classes.input}
-          size='small'
-          type={isPasswordVisible ? 'text' : 'password'}
-          name='password'
-          value={password}
-          onChange={handleChange}
-          error={passwordError}
-          helperText={passwordError ? passwordError : ''}
-          disabled={isLoading}
-        />
-        <Button
-          variant='contained'
-          fullWidth
-          className={classes.btn}
-          disableElevation
-          color='primary'
-          disabled={
-            emailError || passwordError || !email || !password || isLoading
-              ? true
-              : false
-          }
-          type='submit'
-        >
-          Log In
-        </Button>
-        <div className={styles.or_seperator}>
-          <span></span>
-          <Typography
-            variant='body2'
-            className={classes.or_text}
-            color='textSecondary'
-          >
-            OR
-          </Typography>
-          <span></span>
-        </div>
-        <Button
-          className={classes.google_btn}
-          fullWidth
-          variant='outlined'
-          color='primary'
-          onClick={handleGoogleLogin}
-          disabled={isLoading}
-        >
-          <img
-            src='google-icon.svg'
-            alt='Google logo'
-            width='18px'
-            className={styles.google_logo}
-          />
-          <Typography display='inline'>Log in with Google</Typography>
-        </Button>
-        <Typography className={classes.forgot_pass} variant='subtitle2'>
-          <Link>Forgot password?</Link>
+    <>
+      <div className={styles.container}>
+        <Typography variant='h4' className={classes.brand}>
+          iDreamm
         </Typography>
-      </form>
-    </div>
+        <Typography className={classes.subtitle} color='textSecondary'>
+          Sign in to continue your journey
+        </Typography>
+        <form className={styles.form} onSubmit={handleLogin}>
+          <TextField
+            fullWidth
+            label='Email'
+            variant='outlined'
+            className={classes.input}
+            size='small'
+            type='email'
+            name='email'
+            value={email}
+            onChange={handleChange}
+            error={emailError}
+            helperText={emailError ? emailError : ''}
+            disabled={isLoading}
+          />
+          <TextField
+            fullWidth
+            label='Password'
+            variant='outlined'
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position='end'>
+                  <IconButton
+                    aria-label='toggle password visibility'
+                    edge='end'
+                    onClick={() =>
+                      setIsPasswordVisible(
+                        (isPasswordVisible) => !isPasswordVisible
+                      )
+                    }
+                  >
+                    {!isPasswordVisible ? (
+                      <Visibility fontSize='small' />
+                    ) : (
+                      <VisibilityOff fontSize='small' />
+                    )}
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
+            className={classes.input}
+            size='small'
+            type={isPasswordVisible ? 'text' : 'password'}
+            name='password'
+            value={password}
+            onChange={handleChange}
+            error={passwordError}
+            helperText={passwordError ? passwordError : ''}
+            disabled={isLoading}
+          />
+          <Button
+            variant='contained'
+            fullWidth
+            className={classes.btn}
+            disableElevation
+            color='primary'
+            disabled={
+              emailError || passwordError || !email || !password || isLoading
+                ? true
+                : false
+            }
+            type='submit'
+          >
+            Log In
+          </Button>
+          <div className={styles.or_seperator}>
+            <span></span>
+            <Typography
+              variant='body2'
+              className={classes.or_text}
+              color='textSecondary'
+            >
+              OR
+            </Typography>
+            <span></span>
+          </div>
+          <Button
+            className={classes.google_btn}
+            fullWidth
+            variant='outlined'
+            color='primary'
+            onClick={handleGoogleLogin}
+            disabled={isLoading}
+          >
+            <img
+              src='google-icon.svg'
+              alt='Google logo'
+              width='18px'
+              className={styles.google_logo}
+            />
+            <Typography display='inline'>Log in with Google</Typography>
+          </Button>
+          <Typography className={classes.forgot_pass} variant='subtitle2'>
+            <Link onClick={() => setIsPRDialog(true)}>Forgot password?</Link>
+          </Typography>
+        </form>
+      </div>
+      <ResetPasswordDialog
+        open={isPRDialog}
+        onClose={() => setIsPRDialog(false)}
+      />
+    </>
   );
 }

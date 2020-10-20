@@ -17,16 +17,32 @@
     position: relative;
     background: #000;
     width: 100%;
-    max-width: 700px;
     height: 100%;
-    max-height: 900px;
+    max-height: 830px;
     display: flex;
-    flex-direction: column;
     justify-content: center;
     align-items: center;
 }
 
+.audioCall__container {
+    max-width: 720px;
+}
+
+.videoCall__container {
+    max-width: 1366px;
+}
+
+.user__container {
+    align-self: flex-start;
+    height: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
 .mainVideo__container {
+    position: absolute;
     height: 100%;
     width: 100%;
     display: flex;
@@ -35,18 +51,23 @@
 
 .mainVideo__container video,
 .miniVideo__container video {
-    width: 100%;
-    max-height: 100%;
+    height: 100%;
+    max-width: 100%;
+}
+
+.mainVideo__container video {
+    margin: auto;
 }
 
 .miniVideo__container {
-    position: absolute;
+    position: fixed;
     bottom: 5px;
     right: 5px;
-    height: 150px;
-    width: 80px;
+    height: 144px;
+    width: 256px;
     display: flex;
     align-items: flex-end;
+    justify-content: flex-end;
 }
 
 .callActions__container {
@@ -56,4 +77,25 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    align-items: center;
+}
+
+@media (max-width: 800px) {
+    .miniVideo__container {
+        bottom: unset;
+        right: unset;
+        width: 100px;
+        height: 170px;
+        top: 5px;
+        left: 5px;
+        align-items: center;
+        justify-content: flex-start;
+        background: #000;
+    }
+
+    .miniVideo__container>video {
+        height: unset;
+        width: 100%;
+        max-height: 100%;
+    }
 }

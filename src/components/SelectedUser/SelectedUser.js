@@ -1,5 +1,16 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Avatar, IconButton, makeStyles, Typography } from '@material-ui/core';
+import {
+  Avatar,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  IconButton,
+  makeStyles,
+  Typography,
+} from '@material-ui/core';
 import { ArrowBack, Call, Videocam } from '@material-ui/icons';
 import { blue, red } from '@material-ui/core/colors';
 import moment from 'moment';
@@ -30,10 +41,11 @@ const useStyles = makeStyles({
 export default function SelectedUser({ isMobile, onBack }) {
   const [photoUrl, setPhotoUrl] = useState('');
   const [status, setStatus] = useState('Offline');
+  const [isErrorDialog, setIsErrorDialog] = useState(false);
   const classes = useStyles();
 
   const { selectedUser, room } = useContext(SelectedUserContext);
-  const { setCall } = useContext(CallContext);
+  const { setCall, peer } = useContext(CallContext);
 
   useEffect(() => {
     const statusRef = firebase.database().ref('status/' + selectedUser.uid);
@@ -63,52 +75,77 @@ export default function SelectedUser({ isMobile, onBack }) {
   }, [selectedUser.uid]);
 
   const handleAudioCall = () => {
-    setCall({ isCalling: true, type: 'audio', room, caller: true });
+    if (peer.id) {
+      setCall({ isCalling: true, type: 'audio', room, caller: true });
+    } else {
+      setIsErrorDialog(true);
+    }
   };
 
   const handleVideoCall = () => {
-    setCall({ isCalling: true, type: 'video', room, caller: true });
+    if (peer.id) {
+      setCall({ isCalling: true, type: 'video', room, caller: true });
+    } else {
+      setIsErrorDialog(true);
+    }
   };
 
   return (
-    <div
-      className={styles.selectedUser}
-      style={{ padding: isMobile ? 0 : '0 20px' }}
-    >
-      <div>
-        {isMobile && (
-          <IconButton onClick={onBack} color='inherit'>
-            <ArrowBack />
-          </IconButton>
-        )}
-        <Avatar
-          className={classes.avatar}
-          src={photoUrl}
-          alt={selectedUser.username}
-        />
+    <>
+      <div
+        className={styles.selectedUser}
+        style={{ padding: isMobile ? 0 : '0 20px' }}
+      >
         <div>
-          <Typography variant='body2'>{selectedUser.username}</Typography>
-          <Typography
-            className={
-              status === 'Online' ? classes.statusOnline : classes.statusOffline
-            }
+          {isMobile && (
+            <IconButton onClick={onBack} color='inherit'>
+              <ArrowBack />
+            </IconButton>
+          )}
+          <Avatar
+            className={classes.avatar}
+            src={photoUrl}
+            alt={selectedUser.username}
+          />
+          <div>
+            <Typography variant='body2'>{selectedUser.username}</Typography>
+            <Typography
+              className={
+                status === 'Online'
+                  ? classes.statusOnline
+                  : classes.statusOffline
+              }
+            >
+              {status}
+            </Typography>
+          </div>
+        </div>
+        <div>
+          <IconButton color='inherit' onClick={handleAudioCall}>
+            <Call />
+          </IconButton>
+          <IconButton
+            edge={isMobile ? '' : 'end'}
+            color='inherit'
+            onClick={handleVideoCall}
           >
-            {status}
-          </Typography>
+            <Videocam />
+          </IconButton>
         </div>
       </div>
-      <div>
-        <IconButton color='inherit' onClick={handleAudioCall}>
-          <Call />
-        </IconButton>
-        <IconButton
-          edge={isMobile ? '' : 'end'}
-          color='inherit'
-          onClick={handleVideoCall}
-        >
-          <Videocam />
-        </IconButton>
-      </div>
-    </div>
+      <Dialog open={isErrorDialog} onClose={() => setIsErrorDialog(false)}>
+        <DialogTitle>Information</DialogTitle>
+        <DialogContent>
+          <DialogContentText color='inherit'>
+            Sorry, this feature is under maintenance. Please try again later
+          </DialogContentText>
+          <DialogActions>
+            <Button color='primary' onClick={() => setIsErrorDialog(false)}>
+              Ok
+            </Button>
+          </DialogActions>
+        </DialogContent>
+      </Dialog>
+    </>
   );
 }

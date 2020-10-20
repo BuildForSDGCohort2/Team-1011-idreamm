@@ -134,7 +134,7 @@ export default function SelectedUser({ isMobile, onBack }) {
         </div>
       </div>
       <Dialog open={isErrorDialog} onClose={() => setIsErrorDialog(false)}>
-        <DialogTitle>Information</DialogTitle>
+        <DialogTitle>Support</DialogTitle>
         <DialogContent>
           <DialogContentText color='inherit'>
             Sorry, this feature is under maintenance. Please try again later
